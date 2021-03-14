@@ -1,0 +1,1 @@
+type MatcherFunction = (Message) => boolean;
