@@ -1,10 +1,9 @@
 class STTunnel implements Tunnel {
-    tunnelId: string;
-    private _messages: [Message];
+    private readonly tunnelId: string;
+    private _messages: [ReadOnlyMessage];
     private _preProcessor: ProcessorFunction;
     private _processor: ProcessorFunction;
 
-    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor: ProcessorFunction)
     constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: ProcessorFunction) {
 
         this.addPreProcessor(preProcessor);
@@ -15,17 +14,22 @@ class STTunnel implements Tunnel {
 
     }
 
-    addMessage(message: Message): Tunnel {
+    getTunnelId(): string {
+        return this.tunnelId;
+    }
+
+    addMessage(message: WriteableMessage): ReadOnlyMessage {
         if(message != undefined){
-            if(message.callbackFunction == undefined || message.data == undefined){
-                new Error("Required properties not defined")
+            if(message.getCallbackFunction() == undefined || message.getData() == undefined){
+                throw new Error("Required properties not defined")
             } else {
                 message.setTunnelId(this.tunnelId);
-                this._messages.push(message);
-                return this;
+                let readOnlyMessage: ReadOnlyMessage = message.createReadOnlyMessage();
+                this._messages.push(readOnlyMessage);
+                return readOnlyMessage;
             }
         } else {
-            new Error(" Cannot add undefined values in tunnel")
+            throw new Error(" Cannot add undefined values in tunnel")
         }
     }
 
@@ -39,7 +43,7 @@ class STTunnel implements Tunnel {
             if(this._processor == undefined)
                 this._processor = fn;
             else
-                return Error(
+                throw new Error(
                     "Processor already defined for tunnel"
                 )
         }
@@ -52,12 +56,13 @@ class STTunnel implements Tunnel {
             return this._messages.length;
     }
 
-    pollMessage(): Message {
+    pollMessage(): ReadOnlyMessage {
         if(this.getLength() > 0){
             return this._messages.shift();
-        } else {
-            return undefined;
         }
+
+        throw new Error("Empty tunnel");
+
     }
 
 }

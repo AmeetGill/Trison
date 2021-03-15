@@ -1,1 +1,1 @@
-type ProcessorFunction = (Message) => Message;
+type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage;

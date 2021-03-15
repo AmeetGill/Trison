@@ -1,1 +1,1 @@
-type MatcherFunction = (Message) => boolean;
+type MatcherFunction = (readOnyMessage: ReadOnlyMessage) => boolean;

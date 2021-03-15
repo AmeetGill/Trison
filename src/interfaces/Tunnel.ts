@@ -1,16 +1,15 @@
 interface Tunnel {
 
-    // unique tunnelId in queue
-    tunnelId: string;
+    addMessage(message: WriteableMessage): ReadOnlyMessage;
 
-    addMessage(message: Message): Tunnel;
-
-    pollMessage(): Message;
+    pollMessage(): ReadOnlyMessage;
 
     addPreProcessor(fn: ProcessorFunction);
 
     addProcessor(fn: ProcessorFunction);
 
     getLength(): number;
+
+    getTunnelId(): string;
 
 }

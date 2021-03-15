@@ -1,18 +1,14 @@
 class ConditionalTunnel extends STTunnel implements ConditionalTunnelInterface {
     private readonly _matchFunction: MatcherFunction;
 
-    public readonly tunnelId: string;
-
-    constructor(processor: ProcessorFunction, tunnelId: string)
-    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: ProcessorFunction)
-    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: ProcessorFunction, matchFunction?: MatcherFunction) {
+    constructor(processor: ProcessorFunction,  matchFunction: MatcherFunction, tunnelId: string, preProcessor?: ProcessorFunction) {
         super(processor,tunnelId,preProcessor);
 
         if(matchFunction != undefined)
             this._matchFunction = matchFunction;
     }
 
-    match(messageToMatch: Message): boolean {
+    match(messageToMatch: ReadOnlyMessage): boolean {
         if(this._matchFunction == undefined){
             return Math.random() > 0.5;
         }

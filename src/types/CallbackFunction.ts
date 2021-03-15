@@ -1,0 +1,1 @@
+type CallbackFunction = (message: ReadOnlyMessage) => any;
