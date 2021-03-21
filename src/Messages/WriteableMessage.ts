@@ -1,4 +1,7 @@
-class WriteableMessage{
+import ReadOnlyMessage from "./ReadOnlyMessage";
+import {CallbackFunction} from "../types/CallbackFunction";
+
+export default class WriteableMessage{
     //to which tunnel message is assigned
     private _tunnelId: string;
 

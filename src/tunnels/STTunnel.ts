@@ -1,6 +1,10 @@
-class STTunnel implements Tunnel {
+import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
+import WriteableMessage from "../Messages/WriteableMessage";
+import {ProcessorFunction} from "../types/ProcessorFunction";
+import Tunnel from "../interfaces/Tunnel";
+export default class STTunnel implements Tunnel {
     private readonly tunnelId: string;
-    private _messages: [ReadOnlyMessage];
+    private _messages: ReadOnlyMessage[] = [];
     private _preProcessor: ProcessorFunction;
     private _processor: ProcessorFunction;
 

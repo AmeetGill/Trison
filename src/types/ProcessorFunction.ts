@@ -1,1 +1,3 @@
-type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage;
+import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
+export type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage;
+

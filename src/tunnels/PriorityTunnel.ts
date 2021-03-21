@@ -1,6 +1,9 @@
-class PriorityTunnel extends STTunnel implements PriorityTunnelInterface {
+import STTunnel from "./STTunnel";
+import PriorityTunnelInterface from "../interfaces/PriorityTunnelInterface";
+import {ProcessorFunction} from "../types/ProcessorFunction";
+
+export class PriorityTunnel extends STTunnel implements PriorityTunnelInterface {
     private tunnelPriority: number
-    public readonly tunnelId: string;
 
     constructor(processor: ProcessorFunction, tunnelId: string)
     constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: ProcessorFunction) {

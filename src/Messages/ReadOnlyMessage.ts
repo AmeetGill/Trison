@@ -1,4 +1,7 @@
-class ReadOnlyMessage {
+import {CallbackFunction} from "../types/CallbackFunction";
+import WriteableMessage from "./WriteableMessage";
+
+export default class ReadOnlyMessage {
     private readonly _data: object;
     private readonly _callbackFunction: CallbackFunction;
     private readonly _priority: number;
