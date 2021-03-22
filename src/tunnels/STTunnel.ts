@@ -2,6 +2,7 @@ import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import WriteableMessage from "../Messages/WriteableMessage";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
+import {NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
 export default class STTunnel implements Tunnel {
     private readonly tunnelId: string;
     private _messages: ReadOnlyMessage[] = [];
@@ -25,7 +26,7 @@ export default class STTunnel implements Tunnel {
     addMessage(message: WriteableMessage): ReadOnlyMessage {
         if(message != undefined){
             if(message.getCallbackFunction() == undefined || message.getData() == undefined){
-                throw new Error("Required properties not defined")
+                throw new Error(REQUIRED_PROPERTY_NOT_FOUND);
             } else {
                 message.setTunnelId(this.tunnelId);
                 let readOnlyMessage: ReadOnlyMessage = message.createReadOnlyMessage();
@@ -33,7 +34,7 @@ export default class STTunnel implements Tunnel {
                 return readOnlyMessage;
             }
         } else {
-            throw new Error(" Cannot add undefined values in tunnel")
+            throw new Error(UNDEFINED_MESSAGE);
         }
     }
 
@@ -67,6 +68,39 @@ export default class STTunnel implements Tunnel {
 
         throw new Error("Empty tunnel");
 
+    }
+
+    // need to handle synchronization
+    // slow
+    containsMessage(readonlyMessage: ReadOnlyMessage): boolean {
+        for(let message of this._messages){
+            if(message.equals(readonlyMessage)){
+               return true;
+            }
+        }
+        return false;
+    }
+
+    containsMessageWithId(readonlyMessageId: string): boolean {
+        for(let message of this._messages){
+            if(message.getMessageId() === readonlyMessageId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getMessageCopyWithId(readonlyMessageId: string): ReadOnlyMessage {
+        for(let message of this._messages){
+            if(message.getMessageId() === readonlyMessageId){
+                return message.clone();
+            }
+        }
+        throw new Error(NO_MESSAGE_FOUND_WITH_ID);
+    }
+
+    isEmpty(): boolean {
+        return this.getLength() === 0;
     }
 
 }

@@ -16,4 +16,10 @@ export default interface Tunnel {
 
     getTunnelId(): string;
 
+    containsMessageWithId(messageId: string): boolean;
+
+    getMessageCopyWithId(messageId: string): ReadOnlyMessage;
+
+    isEmpty(): boolean;
+
 }

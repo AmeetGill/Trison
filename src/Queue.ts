@@ -23,10 +23,18 @@ export default class Queue{
         return tunnel.addMessage(message);
     }
 
+    offerMessageWithId(message: WriteableMessage, tunnelId: string): ReadOnlyMessage {
+        if(!this.containsTunnelWithId(tunnelId)) {
+            throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
+        }
+        let tunnel = this.getTunnelFromId(tunnelId);
+        return tunnel.addMessage(message);
+    }
+
     // will match with conditional tunnels
     // force push to push a message even if no tunnel is not found, create a separate tunnel for unwatch messages;
     offer(message: WriteableMessage): ReadOnlyMessage {
-        let readOnlyMessage: ReadOnlyMessage =message.createReadOnlyMessage();
+        let readOnlyMessage: ReadOnlyMessage = message.createReadOnlyMessage();
         let tunnel: Tunnel = this.findMatchingTunnel(readOnlyMessage);
 
         if(tunnel != undefined){
@@ -57,7 +65,7 @@ export default class Queue{
 
     containsTunnelWithId(tunnelId: string): boolean {
 
-        console.log("checking tunnelId" + tunnelId + "from " , [...this.conditionalTunnels,...this.stTunnels])
+        // console.log("checking tunnelId" + tunnelId + "from " , [...this.conditionalTunnels,...this.stTunnels])
         for(let tunnel of [...this.conditionalTunnels,...this.stTunnels]){
 
             if(tunnel.getTunnelId() === tunnelId){
@@ -73,24 +81,22 @@ export default class Queue{
         if(this.containsTunnelWithId(tunnelId)){
             throw new Error(DUPLICATE_TUNNEL_MESSAGE);
         }
-        console.log("creating tunning with id "+tunnelId);
 
         let newSTTunnel: STTunnel= new STTunnel(
                 processorFunction,
                 tunnelId,
             );
-        console.log("created tunning with id ",newSTTunnel);
 
         this.stTunnels.push(newSTTunnel);
         return newSTTunnel;
     }
 
-    static getUniqueTunnelId(): string {
+    static getUniqueId(): string {
         return uuid;
     }
 
     createSTTunnelWithoutId(processorFunction: ProcessorFunction ): Tunnel {
-        let tunnelId = Queue.getUniqueTunnelId();
+        let tunnelId = Queue.getUniqueId();
         return this.createSTTunnelWithId(processorFunction,tunnelId);
     }
 
@@ -120,7 +126,7 @@ export default class Queue{
     }
 
     createConditionalTunnel(matchFunction: MatcherFunction, processorFunction: ProcessorFunction): Tunnel {
-        let tunnelId = Queue.getUniqueTunnelId();
+        let tunnelId = Queue.getUniqueId();
         let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
             processorFunction,
             matchFunction,
@@ -131,7 +137,7 @@ export default class Queue{
     }
 
     createConditionalTunnelWithPreProcessor(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, preProcessorFunction: ProcessorFunction): Tunnel {
-        let tunnelId = Queue.getUniqueTunnelId();
+        let tunnelId = Queue.getUniqueId();
         let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
             processorFunction,
             matchFunction,
