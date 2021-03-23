@@ -1,5 +1,5 @@
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
-import WriteableMessage from "../Messages/WriteableMessage";
+import Message from "../Messages/Message";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
 import {NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
@@ -23,13 +23,13 @@ export default class STTunnel implements Tunnel {
         return this.tunnelId;
     }
 
-    addMessage(message: WriteableMessage): ReadOnlyMessage {
+    addMessage(message: Message): ReadOnlyMessage {
         if(message != undefined){
             if(message.getCallbackFunction() == undefined || message.getData() == undefined){
                 throw new Error(REQUIRED_PROPERTY_NOT_FOUND);
             } else {
                 message.setTunnelId(this.tunnelId);
-                let readOnlyMessage: ReadOnlyMessage = message.createReadOnlyMessage();
+                let readOnlyMessage: ReadOnlyMessage = message.createNewReadOnlyMessage();
                 this._messages.push(readOnlyMessage);
                 return readOnlyMessage;
             }

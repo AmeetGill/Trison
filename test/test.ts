@@ -1,5 +1,5 @@
 import ReadOnlyMessage from "../src/Messages/ReadOnlyMessage";
-import WriteableMessage from "../src/Messages/WriteableMessage";
+import Message from "../src/Messages/Message";
 import {describe,it} from "mocha"
 import * as chai from "chai";
 import chaiExclude from 'chai-exclude';
@@ -8,6 +8,7 @@ import STTunnel from "../src/tunnels/STTunnel";
 import {stub,mock} from "sinon";
 import Tunnel from "../src/interfaces/Tunnel";
 import {DUPLICATE_TUNNEL_MESSAGE, NO_MESSAGE_FOUND_WITH_ID} from "../src/Utils/const";
+import UUID from "../src/Utils/UUID";
 
 chai.use(chaiExclude);
 
@@ -22,20 +23,14 @@ let data = {
 let processorFunction = (message: ReadOnlyMessage) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(
-        message.getCallbackFunction,
-        extractedData,
-        message.getPriority(),
-        message.getTunnelId(),
-        message.getMessageId()
-    );
+    return new ReadOnlyMessage(message);
 
 }
 
 describe('STTunnel should behave like simple queue', function() {
     describe('test createSTTunnelWithoutId ', function() {
         it('should be able to ', function() {
-            stub(Queue).getUniqueId.returns("uuid")
+            stub(UUID).generate.returns("uuid")
 
             let newMultiLevelQueue = new Queue();
 
@@ -118,11 +113,18 @@ describe('STTunnel should behave like simple queue', function() {
         it('should be able to add message in single STTunnel', function() {
             let myUUID = "myUUID"
             let callbackFunction = () => {};
-            let writeableMessage = new WriteableMessage(
+            let writeableMessage = new Message(
                 {...data},
                 callbackFunction,
                 2
             );
+
+            let expectedMessage1 = new Message(
+                {...data},
+                callbackFunction,
+                2
+            );
+
 
             let multiLevelQueue = new Queue();
 
@@ -131,13 +133,9 @@ describe('STTunnel should behave like simple queue', function() {
                 myUUID
             );
 
-            let expectedMessage = new ReadOnlyMessage(
-                callbackFunction,
-                {...data},
-                2,
-                tunnelCreated.getTunnelId(),
-                writeableMessage.getMessageId()
-            )
+            expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
+
+            let expectedMessage = expectedMessage1.createNewReadOnlyMessage()
 
             let readOnlyMessage = multiLevelQueue.offerMessage(
                 writeableMessage,

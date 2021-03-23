@@ -1,5 +1,6 @@
 import {CallbackFunction} from "../types/CallbackFunction";
 import * as _ from 'lodash';
+import Message from "./Message";
 
 export default class ReadOnlyMessage {
     private readonly _data: object;
@@ -8,26 +9,20 @@ export default class ReadOnlyMessage {
     private readonly _tunnelId: string;
     private readonly _messageId: string;
 
-    constructor(callbackFunction: CallbackFunction, data: object, priority: number, tunnelId, messageId: string ) {
-        this._data = data;
-        this._callbackFunction = callbackFunction;
-        this._priority = priority;
-        this._tunnelId = tunnelId;
-        this._messageId = messageId;
-    }
-
-    clone(): ReadOnlyMessage {
-        return new ReadOnlyMessage(
-            this.getCallbackFunction,
-            _.cloneDeep<object>(this.getData()),
-            this.getPriority(),
-            this.getTunnelId(),
-            this.getMessageId()
-        );
+    constructor(message: Message | ReadOnlyMessage) {
+        this._data = _.cloneDeep<object>(message.getData());
+        this._callbackFunction = message.getCallbackFunction();
+        this._priority = message.getPriority();
+        this._tunnelId = message.getTunnelId();
+        this._messageId = message.getMessageId();
     }
 
     getCallbackFunction(): CallbackFunction {
         return this._callbackFunction;
+    }
+
+    clone(): ReadOnlyMessage{
+        return new ReadOnlyMessage(this);
     }
 
     // provide a copy of the data

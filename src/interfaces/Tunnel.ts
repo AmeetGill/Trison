@@ -1,10 +1,10 @@
-import WriteableMessage from "../Messages/WriteableMessage";
+import Message from "../Messages/Message";
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 
 export default interface Tunnel {
 
-    addMessage(message: WriteableMessage): ReadOnlyMessage;
+    addMessage(message: Message): ReadOnlyMessage;
 
     pollMessage(): ReadOnlyMessage;
 
