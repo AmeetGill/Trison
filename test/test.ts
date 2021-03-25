@@ -5,7 +5,7 @@ import * as chai from "chai";
 import chaiExclude from 'chai-exclude';
 import Queue from "../src/Queue";
 import STTunnel from "../src/tunnels/STTunnel";
-import {stub,mock} from "sinon";
+import {stub,createSandbox} from "sinon";
 import Tunnel from "../src/interfaces/Tunnel";
 import {DUPLICATE_TUNNEL_MESSAGE, NO_MESSAGE_FOUND_WITH_ID} from "../src/Utils/const";
 import UUID from "../src/Utils/UUID";
@@ -13,6 +13,7 @@ import UUID from "../src/Utils/UUID";
 chai.use(chaiExclude);
 
 let expect = chai.expect;
+let sandbox = createSandbox();
 
 let data = {
     userId: "lk3kj3kj3kj3k3jk3j",
@@ -30,7 +31,7 @@ let processorFunction = (message: ReadOnlyMessage) => {
 describe('STTunnel should behave like simple queue', function() {
     describe('test createSTTunnelWithoutId ', function() {
         it('should be able to ', function() {
-            stub(UUID).generate.returns("uuid")
+            sandbox.stub(UUID).generate.returns("uuid")
 
             let newMultiLevelQueue = new Queue();
 
@@ -46,6 +47,8 @@ describe('STTunnel should behave like simple queue', function() {
             expect(tunnelCreated).to.deep.equal(expectedTunnel)
             expect(newMultiLevelQueue.containsTunnelWithId("uuid")).to.true;
             expect(newMultiLevelQueue.containsTunnelWithId("uuid1")).to.false;
+
+            sandbox.restore();
 
         });
     });
