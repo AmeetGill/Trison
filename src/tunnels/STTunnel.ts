@@ -90,12 +90,15 @@ export default class STTunnel implements Tunnel {
         return false;
     }
 
-    getMessageCopyWithId(readonlyMessageId: string): ReadOnlyMessage {
+    getMessagesWithId(messageId: string): ReadOnlyMessage[] {
+        let matchedMessages: ReadOnlyMessage[] = [];
         for(let message of this._messages){
-            if(message.getMessageId() === readonlyMessageId){
-                return message.clone();
+            if(message.getMessageId() === messageId){
+                matchedMessages.push(message.clone());
             }
         }
+        if(matchedMessages.length > 0)
+            return matchedMessages;
         throw new Error(NO_MESSAGE_FOUND_WITH_ID);
     }
 

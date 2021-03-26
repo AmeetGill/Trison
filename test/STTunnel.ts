@@ -145,17 +145,72 @@ describe('STTunnel should behave like simple queue', function() {
                 tunnelCreated
             );
 
-            expect(readOnlyMessage).excluding("_callbackFunction").to.deep.equals(expectedMessage);
-            expect(tunnelCreated.containsMessageWithId(expectedMessage.getMessageId())).to.be.true;
-            expect(tunnelCreated.containsMessageWithId(expectedMessage.getMessageId()+"x")).to.be.false;
-            expect(tunnelCreated.getMessageCopyWithId(expectedMessage.getMessageId()))
-                .excluding("_callbackFunction")
-                .to.deep.equal(expectedMessage);
-            expect(() => tunnelCreated.getMessageCopyWithId(expectedMessage.getMessageId()+"x"))
+            expect(readOnlyMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.containsMessageWithId(readOnlyMessage.getMessageId())).to.be.true;
+            expect(tunnelCreated.getMessagesWithId(readOnlyMessage.getMessageId()))
+                .excluding(["_callbackFunction","_messageId"])
+                .to.deep.equal([expectedMessage]);
+            expect(() => tunnelCreated.getMessagesWithId(expectedMessage.getMessageId() + "x"))
                 .to.throw(Error).with.property("message",NO_MESSAGE_FOUND_WITH_ID);
 
             let polledMessage = tunnelCreated.pollMessage();
-            expect(polledMessage).excluding("_callbackFunction").to.deep.equals(expectedMessage);
+            expect(polledMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.isEmpty()).to.be.true
+
+
+        });
+    });
+
+    describe('test message pushing using createSTTunnel ', function() {
+        it('should be able to add same message again in single STTunnel', function() {
+            let myUUID = "myUUID"
+            let callbackFunction = () => {};
+            let writeableMessage = new Message(
+                {...data},
+                callbackFunction,
+                2
+            );
+
+            let expectedMessage1 = new Message(
+                {...data},
+                callbackFunction,
+                2
+            );
+
+
+            let multiLevelQueue = new Queue();
+
+            let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
+                processorFunction,
+                myUUID
+            );
+
+            expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
+
+            let expectedMessage = expectedMessage1.createNewReadOnlyMessage()
+
+            let readOnlyMessage = multiLevelQueue.offerMessage(
+                writeableMessage,
+                tunnelCreated
+            );
+
+            let readOnlyMessage2 = multiLevelQueue.offerMessage(
+                writeableMessage,
+                tunnelCreated
+            );
+
+            expect(readOnlyMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.containsMessageWithId(readOnlyMessage.getMessageId())).to.be.true;
+            expect(tunnelCreated.getMessagesWithId(readOnlyMessage.getMessageId()))
+                .excluding(["_callbackFunction","_messageId"])
+                .to.deep.equal([expectedMessage,expectedMessage]);
+            expect(() => tunnelCreated.getMessagesWithId(expectedMessage.getMessageId() + "x"))
+                .to.throw(Error).with.property("message",NO_MESSAGE_FOUND_WITH_ID);
+
+            let polledMessage = tunnelCreated.pollMessage();
+            let polledMessage2 = tunnelCreated.pollMessage();
+            expect(polledMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(polledMessage2).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
             expect(tunnelCreated.isEmpty()).to.be.true
 
 

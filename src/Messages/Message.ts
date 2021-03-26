@@ -87,6 +87,7 @@ export default class Message {
     equals(writeableMessage: Message): boolean {
         return  writeableMessage.getPriority() == this.getPriority()
                         && (writeableMessage.getTunnelId() ? writeableMessage.getTunnelId() === this.getTunnelId() : true)
+                        && writeableMessage.getMessageId() === this.getMessageId()
                         && _.isEqual(writeableMessage.getData(),this.getData());
     }
 }

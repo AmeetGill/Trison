@@ -3,12 +3,9 @@ import Message from "../src/Messages/Message";
 import {describe,it} from "mocha"
 import * as chai from "chai";
 import {stub} from "sinon";
-import Tunnel from "../src/interfaces/Tunnel";
 import {
-    DUPLICATE_TUNNEL_MESSAGE,
     ERROR_DELIM, INVALID_MESSAGE_CALLBACK, INVALID_MESSAGE_DATA, INVALID_MESSAGE_PRIORITY,
     INVALID_MESSAGE_PROPERTY, INVALID_TUNNEL_ID,
-    NO_MESSAGE_FOUND_WITH_ID
 } from "../src/Utils/const";
 import UUID from "../src/Utils/UUID";
 
@@ -22,11 +19,11 @@ let data = {
 
 describe('Test messages', function() {
     describe('test create WritableMessage ', function() {
-        it('should be able to create writable WritableMessage', function() {
-            // let messageId1 = "messageId1";
-            // let messageId2 = "messageId2";
+        it('should be able to create WritableMessage', function() {
+            let messageId1 = "messageId1";
+            let messageId2 = "messageId2";
 
-            // stub(UUID).generate.onFirstCall().returns(messageId1).onSecondCall().returns(messageId2);
+            let stubbed = stub(UUID).generate.onFirstCall().returns(messageId1).onSecondCall().returns(messageId2);
 
             let writeableMessage1 = new Message(
                 {...data},
@@ -34,7 +31,7 @@ describe('Test messages', function() {
                 2
             )
 
-            // expect(writeableMessage1.getMessageId()).equal(messageId1);
+            expect(writeableMessage1.getMessageId()).equal(messageId1);
             expect(writeableMessage1.getData()).to.deep.equals(data);
 
             let writeableMessage2 = new Message(
@@ -43,8 +40,53 @@ describe('Test messages', function() {
                 2
             )
 
-            // expect(writeableMessage2.getMessageId()).equal(messageId2);
+            expect(writeableMessage2.getMessageId()).equal(messageId2);
             expect(writeableMessage2.getData()).to.deep.equals(data);
+
+            stubbed.restore()
+
+        });
+    });
+
+    describe('test equals function of WritableMessage ', function() {
+        it('should be able to compare two WritableMessage', function() {
+
+            let stubbed = stub(UUID).generate.returns("messageId1");
+
+            let writeableMessage1 = new Message(
+                {...data},
+                () => {},
+                2
+            )
+
+            let writeableMessage2 = new Message(
+                {...data},
+                () => {},
+                2
+            )
+
+            stubbed.restore()
+
+            let writeableMessage3 = new Message(
+                {...data},
+                () => {},
+                2
+            )
+
+            expect(writeableMessage1.equals(writeableMessage2)).to.be.true
+            expect(writeableMessage3.equals(writeableMessage2)).to.be.false
+            expect(writeableMessage2.equals(writeableMessage3)).to.be.false
+
+
+            let readableMessage1  = writeableMessage1.createNewReadOnlyMessage()
+
+            let readableMessage2 = writeableMessage2.createNewReadOnlyMessage()
+
+            let readableMessage3 = writeableMessage3.createNewReadOnlyMessage()
+
+            expect(readableMessage1.equals(readableMessage2)).to.be.true
+            expect(readableMessage2.equals(readableMessage3)).to.be.false
+            expect(readableMessage3.equals(readableMessage1)).to.be.false
 
         });
     });

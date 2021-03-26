@@ -45,7 +45,7 @@ export default class ReadOnlyMessage {
     equals(readonlyMessage: ReadOnlyMessage): boolean {
         return readonlyMessage.getTunnelId() === this.getTunnelId()
                     && readonlyMessage.getPriority() === this.getPriority()
-                    && readonlyMessage.getMessageId() == this.getTunnelId()
+                    && readonlyMessage.getMessageId() == this.getMessageId()
                     && _.isEqual(readonlyMessage._data,this.getData());
     }
 

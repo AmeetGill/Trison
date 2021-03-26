@@ -18,7 +18,7 @@ export default interface Tunnel {
 
     containsMessageWithId(messageId: string): boolean;
 
-    getMessageCopyWithId(messageId: string): ReadOnlyMessage;
+    getMessagesWithId(messageId: string): ReadOnlyMessage[];
 
     isEmpty(): boolean;
 
