@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import STTunnel from "./tunnels/STTunnel";
 import ConditionalTunnel from "./tunnels/ConditionalTunnel";
 import ReadOnlyMessage from "./Messages/ReadOnlyMessage";
@@ -16,7 +15,6 @@ export default class Queue{
 
     constructor() {}
 
-
     offerMessage(message: Message, tunnel: Tunnel): ReadOnlyMessage {
         if(!this.containsTunnel(tunnel)) {
             throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
@@ -24,7 +22,7 @@ export default class Queue{
         return tunnel.addMessage(message);
     }
 
-    offerMessageWithId(message: Message, tunnelId: string): ReadOnlyMessage {
+    offerMessageForTunnelId(message: Message, tunnelId: string): ReadOnlyMessage {
         if(!this.containsTunnelWithId(tunnelId)) {
             throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
         }
@@ -59,9 +57,11 @@ export default class Queue{
     }
 
     containsTunnel(tunnelToFind: Tunnel): boolean {
-
-        return this.containsTunnelWithId(tunnelToFind.getTunnelId())
-
+        for(let tunnel of [...this.conditionalTunnels,...this.stTunnels]){
+            if(tunnelToFind === tunnel)
+                return true;
+        }
+        return false;
     }
 
     containsTunnelWithId(tunnelId: string): boolean {

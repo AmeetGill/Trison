@@ -2,10 +2,10 @@ import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import Message from "../Messages/Message";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
-import {NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
+import {EMPTY_TUNNEL, NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
 export default class STTunnel implements Tunnel {
     private readonly tunnelId: string;
-    private _messages: ReadOnlyMessage[] = [];
+    private readonly _messages: ReadOnlyMessage[] = [];
     private _preProcessor: ProcessorFunction;
     private _processor: ProcessorFunction;
 
@@ -66,20 +66,10 @@ export default class STTunnel implements Tunnel {
             return this._messages.shift();
         }
 
-        throw new Error("Empty tunnel");
+        throw new Error(EMPTY_TUNNEL);
 
     }
 
-    // need to handle synchronization
-    // slow
-    containsMessage(readonlyMessage: ReadOnlyMessage): boolean {
-        for(let message of this._messages){
-            if(message.equals(readonlyMessage)){
-               return true;
-            }
-        }
-        return false;
-    }
 
     containsMessageWithId(readonlyMessageId: string): boolean {
         for(let message of this._messages){

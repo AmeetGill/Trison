@@ -7,7 +7,12 @@ import Queue from "../../src/Queue";
 import STTunnel from "../../src/tunnels/STTunnel";
 import {stub,createSandbox} from "sinon";
 import Tunnel from "../../src/interfaces/Tunnel";
-import {DUPLICATE_TUNNEL_MESSAGE, NO_MESSAGE_FOUND_WITH_ID} from "../../src/Utils/const";
+import {
+    DUPLICATE_TUNNEL_MESSAGE,
+    EMPTY_TUNNEL,
+    NO_MESSAGE_FOUND_WITH_ID,
+    UNDEFINED_MESSAGE
+} from "../../src/Utils/const";
 import UUID from "../../src/Utils/UUID";
 
 chai.use(chaiExclude);
@@ -48,6 +53,34 @@ export default () => {
             expect(newMultiLevelQueue.containsTunnelWithId("uuid1")).to.false;
 
             stubbed.restore();
+
+        });
+    });
+
+    describe('test addMessage for undefined message ', function() {
+        it('should throw error if undefined message is passed', function() {
+
+            let newMultiLevelQueue = new Queue();
+
+            let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
+                processorFunction
+            );
+
+            expect(() => tunnelCreated.addMessage(undefined)).to.throw(Error).with.property("message",UNDEFINED_MESSAGE)
+
+        });
+    });
+
+    describe('test empty tunnel poll message ', function() {
+        it('should throw error if polling is done on empty tunnel', function() {
+
+            let newMultiLevelQueue = new Queue();
+
+            let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
+                processorFunction
+            );
+
+            expect(() => tunnelCreated.pollMessage()).to.throw(Error).with.property("message",EMPTY_TUNNEL)
 
         });
     });
