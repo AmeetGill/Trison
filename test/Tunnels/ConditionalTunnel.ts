@@ -1,11 +1,11 @@
-import ReadOnlyMessage from "../src/Messages/ReadOnlyMessage";
-import Message from "../src/Messages/Message";
+import ReadOnlyMessage from "../../src/Messages/ReadOnlyMessage";
+import Message from "../../src/Messages/Message";
 import {describe,it} from "mocha"
 import * as chai from "chai";
 import chaiExclude from 'chai-exclude';
-import Queue from "../src/Queue";
-import {NO_CONDITIONAL_TUNNEL_FOUND_MESSAGE} from "../src/Utils/const";
-import Tunnel from "../src/interfaces/Tunnel";
+import Queue from "../../src/Queue";
+import {NO_CONDITIONAL_TUNNEL_FOUND_MESSAGE} from "../../src/Utils/const";
+import Tunnel from "../../src/interfaces/Tunnel";
 
 chai.use(chaiExclude);
 
@@ -52,9 +52,10 @@ let reshuffleArray = (arr: Array<any>) => {
 
 }
 
-describe('Test ConditionalTunnel', function() {
-    describe('test create ConditionalTunnel ', function() {
-        it('should be able to add WritableMessage according to condition', function() {
+
+export default  () => {
+    describe('test create ConditionalTunnel ', function () {
+        it('should be able to add WritableMessage according to condition', function () {
 
             let multilevelQueue = new Queue();
 
@@ -70,13 +71,15 @@ describe('Test ConditionalTunnel', function() {
 
             let writableMessage1 = new Message(
                 data1,
-                () => {},
+                () => {
+                },
                 2
             )
 
             let writableMessage2 = new Message(
                 data2,
-                () => {},
+                () => {
+                },
                 2
             )
 
@@ -106,7 +109,7 @@ describe('Test ConditionalTunnel', function() {
 
         });
 
-        it('should error if no matching tunnel is found for a message', function() {
+        it('should error if no matching tunnel is found for a message', function () {
 
             let multilevelQueue = new Queue();
 
@@ -118,18 +121,20 @@ describe('Test ConditionalTunnel', function() {
 
             let writableMessage1 = new Message(
                 data1,
-                () => {},
+                () => {
+                },
                 2
             )
 
             let writableMessage2 = new Message(
                 data2,
-                () => {},
+                () => {
+                },
                 2
             )
 
             multilevelQueue.offer(writableMessage1);
-            expect(() => multilevelQueue.offer(writableMessage2)).to.throw(Error).with.property("message",NO_CONDITIONAL_TUNNEL_FOUND_MESSAGE)
+            expect(() => multilevelQueue.offer(writableMessage2)).to.throw(Error).with.property("message", NO_CONDITIONAL_TUNNEL_FOUND_MESSAGE)
 
             expect(writableMessage1.getTunnelId()).to.equal(conditionalTunnel1.getTunnelId());
             expect(conditionalTunnel1.containsMessageWithId(writableMessage1.getMessageId())).to.be.true;
@@ -151,9 +156,8 @@ describe('Test ConditionalTunnel', function() {
     });
 
 
-
-    describe('test create ConditionalTunnel multiple ', function() {
-        it('should be able to push to tunnel only if condition matches', function() {
+    describe('test create ConditionalTunnel multiple ', function () {
+        it('should be able to push to tunnel only if condition matches', function () {
 
             let multilevelQueue = new Queue();
 
@@ -164,12 +168,12 @@ describe('Test ConditionalTunnel', function() {
                 };
             }
 
-            let tunnels: Tunnel[]= [];
+            let tunnels: Tunnel[] = [];
             let messages: Message[] = [];
             let tunnelMessageMap = {};
 
-            for(let i = 1; i <= 20; i ++){
-                let tunnelName = "tunnel"+i;
+            for (let i = 1; i <= 20; i++) {
+                let tunnelName = "tunnel" + i;
                 let newMatcherFunction = functionCreator(tunnelName);
                 let tunnel = multilevelQueue.createConditionalTunnel(
                     newMatcherFunction,
@@ -180,7 +184,8 @@ describe('Test ConditionalTunnel', function() {
                 dataNew["tunnel"] = tunnelName;
                 let message = new Message(
                     dataNew,
-                    () => {},
+                    () => {
+                    },
                     2
                 );
                 messages.push(message)
@@ -189,11 +194,11 @@ describe('Test ConditionalTunnel', function() {
 
             reshuffleArray(messages);
 
-            for(let message of messages){
+            for (let message of messages) {
                 multilevelQueue.offer(message);
             }
 
-            for(let tunnel of tunnels){
+            for (let tunnel of tunnels) {
                 let message: Message = tunnelMessageMap[tunnel.getTunnelId()];
                 expect(tunnel.containsMessageWithId(message.getMessageId())).to.be.true;
                 expect(tunnel.getMessagesWithId(message.getMessageId())).to.deep.equals([message.createNewReadOnlyMessage()])
@@ -203,4 +208,4 @@ describe('Test ConditionalTunnel', function() {
 
         });
     });
-});
+}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "test": "nyc mocha -r ts-node/register test/**/*.ts"
+    "test": "nyc mocha -r ts-node/register test/index.ts"
   },
   "keywords": [],
   "author": "",
