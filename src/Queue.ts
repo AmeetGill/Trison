@@ -12,6 +12,7 @@ import UUID from "./Utils/UUID";
 export default class Queue{
     private readonly stTunnels: STTunnel[] = [];
     private readonly conditionalTunnels: ConditionalTunnel[] = [];
+    private readonly workers: Worker[] = [];
 
     constructor() {}
 

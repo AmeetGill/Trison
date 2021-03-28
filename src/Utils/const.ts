@@ -13,3 +13,5 @@ export let INVALID_MESSAGE_CALLBACK = "Callback must be a function"
 export let ERROR_DELIM = " : "
 export let REQUIRED_ARGUMENTS_NOTFOUND ="Required parameters not found"
 export let EMPTY_TUNNEL = "Empty tunnel"
+export let CURRENTLY_PROCESSING = "Currently processing"
+export let WORKER_CANNOT_ACCESS_THE_TUNNEL = "Worker cannot access the tunnel";

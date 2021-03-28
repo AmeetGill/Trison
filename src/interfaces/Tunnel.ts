@@ -16,6 +16,8 @@ export default interface Tunnel {
 
     getTunnelId(): string;
 
+    getProcessorFunction(): ProcessorFunction;
+
     containsMessageWithId(messageId: string): boolean;
 
     getMessagesWithId(messageId: string): ReadOnlyMessage[];

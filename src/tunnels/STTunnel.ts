@@ -44,6 +44,10 @@ export default class STTunnel implements Tunnel {
         return this._preProcessor(message);
     }
 
+    getProcessorFunction(): ProcessorFunction{
+        return this._processor;
+    }
+
     addPreProcessor(fn: ProcessorFunction) {
         if(fn != undefined)
             this._preProcessor = fn;
