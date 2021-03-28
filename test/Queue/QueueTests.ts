@@ -26,6 +26,17 @@ let processorFunction = (message: ReadOnlyMessage) => {
 
 }
 
+let preProcessorFunction = (message: ReadOnlyMessage) => {
+    let extractedData = message.getData();
+    extractedData["preProcessed"] = true;
+    return new ReadOnlyMessage(message);
+}
+
+let matcherFunction1 = (message: ReadOnlyMessage) => {
+    let data = message.getData();
+    return data && data["tunnel"] && data["tunnel"] === "tunnel1";
+}
+
 export default () => {
     describe('test containsTunnel ', function() {
         it('should return true if tunnel is present in the queue ', function() {
@@ -120,35 +131,54 @@ export default () => {
     });
 
     describe('test createTunnelsWithPreprocessor with tunnel Id ', function() {
-        it('should throw error if tunnel is not present in the queue ', function() {
+        it('should preprocess a message if preprocessor is provided to the tunnel ', function () {
 
             let newMultiLevelQueue = new Queue();
 
-            newMultiLevelQueue.createSTTunnelWithId(
+            let tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
                 processorFunction,
-                "uuid"
+                "uuid",
+                preProcessorFunction
             );
 
-            let writeableMessage = new Message(
+            let message = new Message(
                 {...data},
-                () => {},
+                () => {
+                },
                 2
-            );
-            expect(() => {
-                newMultiLevelQueue.offerMessageForTunnelId(
-                    writeableMessage,
-                    "expectedTunnel"
-                )
-            }).to.throw(Error).with.property("message",NO_TUNNEL_FOUND)
-
-            let readOnlyMessage = newMultiLevelQueue.offerMessageForTunnelId(
-                writeableMessage,
-                "uuid"
             )
+            newMultiLevelQueue.offerMessageForTunnelId(message, "uuid");
+            let expectedPreProcessed = preProcessorFunction(message.createNewReadOnlyMessage());
+            let polledMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
 
-            expect(readOnlyMessage).excluding(["_messageId","_callbackFunction"]).to.deep.equals(writeableMessage.createNewReadOnlyMessage())
+            expect(polledMessage).excluding("_callbackFunction").to.deep.equals(expectedPreProcessed);
+
 
         });
+    });
+
+        describe('test createConditionalTunnelsWithPreprocessor with tunnel Id ', function() {
+            it('should preprocess a message if preprocessor is provided to the conditional tunnel ', function() {
+
+                let newMultiLevelQueue = new Queue();
+
+                let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
+                    matcherFunction1,
+                    processorFunction,
+                    preProcessorFunction
+                );
+
+                let message = new Message(
+                    {...data},
+                    () => {},
+                    2
+                )
+                newMultiLevelQueue.offerMessageForTunnelId(message,tunnel.getTunnelId());
+                let expectedPreProcessed = preProcessorFunction(message.createNewReadOnlyMessage());
+                let polledMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
+
+                expect(polledMessage).excluding("_callbackFunction").to.deep.equals(expectedPreProcessed);
+            });
     });
 
 };

@@ -116,7 +116,7 @@ export default class Queue{
         let newSTTunnel: STTunnel = new STTunnel(
             processorFunction,
             tunnelId,
-            processorFunction
+            preProcessorFunction
         )
         this.stTunnels.push(newSTTunnel);
         // need to think about should return whole tunnel

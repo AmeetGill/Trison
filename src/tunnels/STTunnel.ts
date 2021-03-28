@@ -30,12 +30,18 @@ export default class STTunnel implements Tunnel {
             } else {
                 message.setTunnelId(this.tunnelId);
                 let readOnlyMessage: ReadOnlyMessage = message.createNewReadOnlyMessage();
+                if(this._preProcessor != undefined)
+                    readOnlyMessage = this.preProcessMessage(readOnlyMessage);
                 this._messages.push(readOnlyMessage);
                 return readOnlyMessage;
             }
         } else {
             throw new Error(UNDEFINED_MESSAGE);
         }
+    }
+
+    private preProcessMessage(message: ReadOnlyMessage): ReadOnlyMessage {
+        return this._preProcessor(message);
     }
 
     addPreProcessor(fn: ProcessorFunction) {
