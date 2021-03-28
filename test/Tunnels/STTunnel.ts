@@ -193,6 +193,51 @@ export default () => {
         });
     });
 
+    describe('test message immutability using createSTTunnel ', function() {
+        it('should not be able to add message in single STTunnel', function() {
+            let myUUID = "myUUID"
+            let callbackFunction = () => {};
+            let writeableMessage = new Message(
+                {...data},
+                callbackFunction,
+                2
+            );
+
+            let expectedMessage1 = new Message(
+                {...data},
+                callbackFunction,
+                2
+            );
+
+
+            let multiLevelQueue = new Queue();
+
+            let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
+                processorFunction,
+                myUUID
+            );
+
+            expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
+
+            let expectedMessage = expectedMessage1.createNewReadOnlyMessage()
+
+            let readOnlyMessage = multiLevelQueue.offerMessage(
+                writeableMessage,
+                tunnelCreated
+            );
+
+            readOnlyMessage.getData()["changes"] = true;
+
+            expect(readOnlyMessage).excluding(["_callbackFunction","_messageId"]).to.not.deep.equals(expectedMessage);
+
+            let polledMessage = tunnelCreated.pollMessage();
+            expect(polledMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.isEmpty()).to.be.true
+
+
+        });
+    });
+
     describe('test message pushing using createSTTunnel ', function() {
         it('should be able to add same message again in single STTunnel', function() {
             let myUUID = "myUUID"

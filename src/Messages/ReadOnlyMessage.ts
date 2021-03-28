@@ -27,7 +27,8 @@ export default class ReadOnlyMessage {
 
     // provide a copy of the data
     getData(): object {
-        return _.cloneDeep<object>(this._data);
+        // return _.cloneDeep<object>(this._data);
+        return this._data;
     }
 
     getPriority(): number {

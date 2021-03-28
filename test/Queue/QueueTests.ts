@@ -27,8 +27,8 @@ let processorFunction = (message: ReadOnlyMessage) => {
 }
 
 let preProcessorFunction = (message: ReadOnlyMessage) => {
-    let extractedData = message.getData();
-    extractedData["preProcessed"] = true;
+    let extractedData: object = message.getData();
+    extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
 }
 
@@ -152,6 +152,7 @@ export default () => {
             let polledMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
 
             expect(polledMessage).excluding("_callbackFunction").to.deep.equals(expectedPreProcessed);
+            expect(polledMessage).excluding("_callbackFunction").to.not.deep.equals(message.createNewReadOnlyMessage());
 
 
         });
@@ -178,6 +179,8 @@ export default () => {
                 let polledMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
 
                 expect(polledMessage).excluding("_callbackFunction").to.deep.equals(expectedPreProcessed);
+                expect(polledMessage).excluding("_callbackFunction").to.not.equals(message.createNewReadOnlyMessage());
+
             });
     });
 

@@ -33,7 +33,7 @@ export default class STTunnel implements Tunnel {
                 if(this._preProcessor != undefined)
                     readOnlyMessage = this.preProcessMessage(readOnlyMessage);
                 this._messages.push(readOnlyMessage);
-                return readOnlyMessage;
+                return readOnlyMessage.clone();
             }
         } else {
             throw new Error(UNDEFINED_MESSAGE);

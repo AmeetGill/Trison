@@ -16,7 +16,7 @@ export default class Message {
     private _tunnelId: string;
 
     //data
-    private readonly _data: object;
+    private _data: object;
     private readonly _callbackFunction: CallbackFunction;
     private readonly _priority: number;
     private readonly _messageId: string;
