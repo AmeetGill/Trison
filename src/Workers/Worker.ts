@@ -5,13 +5,14 @@ import {CURRENTLY_PROCESSING, WORKER_CANNOT_ACCESS_THE_TUNNEL} from "../Utils/co
 
 export default  class Worker {
 
-    private readonly _tunnels: Tunnel[] = [];
-    private currentlyProcessing: boolean = false;
-    private map: Map<string,Tunnel>;
+    private readonly _locks: Set<string>;
+    private _map: Map<string,Tunnel>;
 
-    Worker(tunnels: Tunnel[]){
+    constructor(tunnels: Tunnel[]){
+        this._locks = new Set<string>();
+        this._map = new Map<string,Tunnel>();
         tunnels.forEach(tunnel => {
-            this.map.set(tunnel.getTunnelId(),tunnel)
+            this._map.set(tunnel.getTunnelId(),tunnel)
         })
     }
 
@@ -30,30 +31,55 @@ export default  class Worker {
     }
 
 
-    async processNextMessage(tunnelId: string){
-
-        if(!this.map.has(tunnelId)){
+    private async processNextMessage(tunnelId: string){
+        if(!this._map.has(tunnelId)){
             throw new Error(WORKER_CANNOT_ACCESS_THE_TUNNEL)
         }
 
-        if(this.currentlyProcessing){
+        if(this._locks.has(tunnelId)){
             throw new Error(CURRENTLY_PROCESSING);
         }
+        console.log("processing messages of tunnel",tunnelId)
 
-        this.currentlyProcessing = true;
+        console.log(" Acquiring lock")
 
-        let tunnel = this.map.get(tunnelId);
+        this._locks.add(tunnelId);
 
-        let readOnlyMessage = tunnel.pollMessage();
-        let processorFunction = tunnel.getProcessorFunction();
+        let tunnel = this._map.get(tunnelId);
+
         try {
+            let readOnlyMessage = tunnel.pollMessage();
+            let processorFunction = tunnel.getProcessorFunction();
             await this.processMessage(readOnlyMessage, processorFunction);
         }catch (err) {
             throw new Error(err);
         } finally {
-            this.currentlyProcessing = false;
+            console.log(" removing lock",tunnelId)
+            this._locks.delete(tunnelId)
+            console.log("locks after removing",this._locks)
         }
 
     }
+
+    dispatchAction() {
+        // need to add clear interval , like typing
+        console.log("Starting dispatcher")
+        // setTimeout(() => {
+            let iterator = this._map.keys();
+            let integratorResult = iterator.next();
+            while (!integratorResult.done) {
+                let tunnelId = integratorResult.value;
+                this.processNextMessage(tunnelId).then(r => {
+                    console.log("Processing complete")
+                }).catch(e => {
+                    // console.error("Error occured", e.message)
+                });
+                integratorResult = iterator.next();
+            }
+
+        //     }
+        // },100)
+    }
+
 
 }
