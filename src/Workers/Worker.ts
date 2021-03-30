@@ -39,9 +39,9 @@ export default  class Worker {
         if(this._locks.has(tunnelId)){
             throw new Error(CURRENTLY_PROCESSING);
         }
-        console.log("processing messages of tunnel",tunnelId)
-
-        console.log(" Acquiring lock")
+        // console.log("processing messages of tunnel",tunnelId)
+        //
+        // console.log(" Acquiring lock")
 
         this._locks.add(tunnelId);
 
@@ -54,23 +54,23 @@ export default  class Worker {
         }catch (err) {
             throw new Error(err);
         } finally {
-            console.log(" removing lock",tunnelId)
+            // console.log(" removing lock",tunnelId)
             this._locks.delete(tunnelId)
-            console.log("locks after removing",this._locks)
+            // console.log("locks after removing",this._locks)
         }
 
     }
 
     dispatchAction() {
         // need to add clear interval , like typing
-        console.log("Starting dispatcher")
+        // console.log("Starting dispatcher")
         // setTimeout(() => {
             let iterator = this._map.keys();
             let integratorResult = iterator.next();
             while (!integratorResult.done) {
                 let tunnelId = integratorResult.value;
                 this.processNextMessage(tunnelId).then(r => {
-                    console.log("Processing complete")
+                    // console.log("Processing complete")
                 }).catch(e => {
                     // console.error("Error occured", e.message)
                 });

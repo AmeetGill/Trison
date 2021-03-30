@@ -72,7 +72,7 @@ export default class STTunnel implements Tunnel {
     }
 
     pollMessage(): ReadOnlyMessage {
-        console.log("polling message",this.getTunnelId())
+        // console.log("polling message",this.getTunnelId())
         if(this.getLength() > 0){
             return this._messages.shift();
         }

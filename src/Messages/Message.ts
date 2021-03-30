@@ -49,12 +49,41 @@ export default class Message {
     }
 
     // this will assign a new message id
-    clone(): Message{
-        return new Message(
-            _.cloneDeep<object>(this.getData()),
-            this.getCallbackFunction,
-            this.getPriority()
-        );
+     clone = {
+            "complete" : () =>
+                 new Message(
+                    _.cloneDeep<object>(this.getData()),
+                    this.getCallbackFunction,
+                    this.getPriority()
+                ),
+            "with": {
+                "different": {
+                    "callbackFunction" : (newCallbackFunction: CallbackFunction) => {
+                        if(newCallbackFunction == undefined)
+                            throw new Error(INVALID_MESSAGE_CALLBACK)
+
+                        return new Message(
+                            _.cloneDeep<object>(this.getData()),
+                            newCallbackFunction,
+                            this.getPriority()
+                        )
+                    },
+                    "priority": (newPriority: number) => {
+                        return new Message(
+                            _.cloneDeep<object>(this.getData()),
+                            this.getCallbackFunction,
+                            newPriority
+                        )
+                    },
+                    "data": (newData: object) => {
+                        return new Message(
+                            _.cloneDeep<object>(newData),
+                            this.getCallbackFunction,
+                            this.getPriority()
+                        )
+                    }
+                }
+            }
     }
 
     getData(): object {

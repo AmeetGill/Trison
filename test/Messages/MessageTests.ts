@@ -199,7 +199,7 @@ export default () => {
                 2
             );
 
-            let clonedWriteableMessage = writeableMessage1.clone();
+            let clonedWriteableMessage = writeableMessage1.clone.complete();
 
             expect(writeableMessage1.getMessageId()).to.not.equal(clonedWriteableMessage.getMessageId());
             expect(writeableMessage1.getData()).to.deep.equals(clonedWriteableMessage.getData());

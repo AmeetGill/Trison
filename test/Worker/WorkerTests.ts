@@ -30,6 +30,9 @@ describe("Pistol Tests", () => {
 
             let newMultiLevelQueue = new Queue();
 
+            let processedByTunnel1: string[] = [];
+            let processedByTunnel2: string[] = [];
+
             let tunnelCreated1 = newMultiLevelQueue.createSTTunnelWithoutId(
                 processorFunction
             );
@@ -38,45 +41,51 @@ describe("Pistol Tests", () => {
                 processorFunction
             );
 
-            tunnelCreated1.addMessage(
-                new Message(
-                    {...data},
-                    (message) => console.log("callback message1 tunnel1",message),
-                    2
-                )
-            )
+            let message1Tunnel1 =  new Message(
+                {...data},
+                (message) => {
+                    processedByTunnel1.push(message.getMessageId());
+                },
+                2
+            );
 
-            tunnelCreated1.addMessage(
-                new Message(
-                    {...data},
-                    (message) => console.log("callback message2 tunnel1",message),
-                    2
-                )
-            )
+            let message2Tunnel1 = message1Tunnel1.clone.complete()
 
-            tunnelCreated2.addMessage(
-                new Message(
-                    {...data},
-                    (message) => console.log("callback message1 tunnel2",message),
-                    2
-                )
-            )
+            let message1Tunnel2 = message1Tunnel1.clone.with.different.callbackFunction((message) => {
+                processedByTunnel2.push(message.getMessageId())
+            })
 
-            tunnelCreated2.addMessage(
-                new Message(
-                    {...data},
-                    (message) => console.log("callback message2 tunnel2",message),
-                    2
-                )
-            )
+            let message2Tunnel2 = message1Tunnel2.clone.complete()
+
+
+            tunnelCreated1.addMessage(message1Tunnel1)
+
+            tunnelCreated2.addMessage(message2Tunnel1)
+
+            tunnelCreated2.addMessage(message1Tunnel2)
+
+            tunnelCreated2.addMessage(message2Tunnel1);
             // console.log(tunnelCreated1,tunnelCreated2)
+
+            let expectedMessageOrder1: string[] = [message1Tunnel1.getMessageId(),message2Tunnel1.getMessageId()];
+            let expectedMessageOrder2: string[] = [message1Tunnel2.getMessageId(),message2Tunnel2.getMessageId()];
+
             let worker = new Worker([tunnelCreated1,tunnelCreated2]);
 
-            worker.dispatchAction();
             setTimeout(() => {
                 worker.dispatchAction();
+                console.log(processedByTunnel2);
+                console.log(processedByTunnel1);
+            },500)
+
+            setTimeout(() => {
+                worker.dispatchAction();
+                console.log(processedByTunnel2);
+                console.log(processedByTunnel1)
                 done()
-            },1000)
+            },1800)
+
+
 
         });
     });
