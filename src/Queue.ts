@@ -10,8 +10,8 @@ import UUID from "./Utils/UUID";
 
 
 export default class Queue{
-    private readonly stTunnels: STTunnel[] = [];
-    private readonly conditionalTunnels: ConditionalTunnel[] = [];
+    private readonly stTunnels: Map<string,STTunnel> = new Map<string,STTunnel>();
+    private readonly conditionalTunnels: Map<string,ConditionalTunnel> = new Map<string,ConditionalTunnel>();
     private readonly workers: Worker[] = [];
 
     constructor() {}
@@ -48,19 +48,37 @@ export default class Queue{
     private findMatchingTunnel(message: ReadOnlyMessage): Tunnel {
         // need to handle synchronization
         // return the first matching tunnel
-        for(let tunnel of this.conditionalTunnels) {
+        let entryMapIterator = this.conditionalTunnels.values();
+        let entryResult = entryMapIterator.next();
+        while(!entryResult.done){
+            let tunnel = entryResult.value;
             if(tunnel.match(message)){
                 return tunnel;
             }
+            entryResult = entryMapIterator.next();
         }
+
         return undefined;
 
     }
 
     containsTunnel(tunnelToFind: Tunnel): boolean {
-        for(let tunnel of [...this.conditionalTunnels,...this.stTunnels]){
+        let entryMapIterator = this.conditionalTunnels.values();
+        let entryResult = entryMapIterator.next();
+        while(!entryResult.done){
+            let tunnel = entryResult.value;
             if(tunnelToFind === tunnel)
                 return true;
+            entryResult = entryMapIterator.next();
+        }
+
+        let entryMapIteratorST = this.stTunnels.values();
+        let entryResultST = entryMapIteratorST.next();
+        while(!entryResultST.done){
+            let tunnel = entryResultST.value;
+            if(tunnelToFind === tunnel)
+                return true;
+            entryResultST = entryMapIteratorST.next();
         }
         return false;
     }
@@ -68,14 +86,7 @@ export default class Queue{
     containsTunnelWithId(tunnelId: string): boolean {
 
         // console.log("checking tunnelId" + tunnelId + "from " , [...this.conditionalTunnels,...this.stTunnels])
-        for(let tunnel of [...this.conditionalTunnels,...this.stTunnels]){
-
-            if(tunnel.getTunnelId() === tunnelId){
-                return true;
-            }
-        }
-
-        return false;
+        return this.stTunnels.has(tunnelId) || this.conditionalTunnels.has(tunnelId);
     }
 
 
@@ -89,7 +100,7 @@ export default class Queue{
                 tunnelId,
             );
 
-        this.stTunnels.push(newSTTunnel);
+        this.stTunnels.set(tunnelId,newSTTunnel);
         return newSTTunnel;
     }
 
@@ -101,10 +112,12 @@ export default class Queue{
 
     private getTunnelFromId(tunnelId: string): Tunnel {
         // this function assume tunnel exists
-        for(let tunnel of [...this.conditionalTunnels,...this.stTunnels]){
-            if(tunnel.getTunnelId() === tunnelId){
-                return tunnel;
-            }
+        if(this.conditionalTunnels.has(tunnelId)){
+            return this.conditionalTunnels.get(tunnelId);
+        }
+
+        if(this.stTunnels.has(tunnelId)){
+            return this.stTunnels.get(tunnelId);
         }
 
         throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
@@ -119,7 +132,7 @@ export default class Queue{
             tunnelId,
             preProcessorFunction
         )
-        this.stTunnels.push(newSTTunnel);
+        this.stTunnels.set(tunnelId,newSTTunnel);
         // need to think about should return whole tunnel
         return newSTTunnel;
     }
@@ -131,7 +144,7 @@ export default class Queue{
             matchFunction,
             tunnelId
         );
-        this.conditionalTunnels.push(conditionalTunnel);
+        this.conditionalTunnels.set(tunnelId,conditionalTunnel);
         return conditionalTunnel;
     }
 
@@ -143,7 +156,7 @@ export default class Queue{
             tunnelId,
             preProcessorFunction
         );
-        this.conditionalTunnels.push(conditionalTunnel);
+        this.conditionalTunnels.set(tunnelId,conditionalTunnel);
         return conditionalTunnel;
     }
 
