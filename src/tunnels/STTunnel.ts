@@ -130,4 +130,8 @@ export default class STTunnel implements Tunnel {
         return this.getLength() === 0;
     }
 
+    dispose() {
+        delete this._worker;
+    }
+
 }

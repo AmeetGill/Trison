@@ -24,4 +24,6 @@ export default interface Tunnel {
 
     isEmpty(): boolean;
 
+    dispose();
+
 }

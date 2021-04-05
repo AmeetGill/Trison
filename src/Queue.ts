@@ -12,8 +12,21 @@ import UUID from "./Utils/UUID";
 export default class Queue{
     private readonly stTunnels: Map<string,STTunnel> = new Map<string,STTunnel>();
     private readonly conditionalTunnels: Map<string,ConditionalTunnel> = new Map<string,ConditionalTunnel>();
+    private readonly autoCreateTunnels: boolean = false;
+    private readonly createWorkerForAutoCreatedTunnels: boolean = false;
+    private readonly autoCreateProcessorFunction: ProcessorFunction;
 
-    constructor() {}
+    constructor(autoCreateTunnels?: boolean, createWorkerForAutoCreatedTunnels?: boolean, autoCreateProcessorFunction?: ProcessorFunction) {
+        this.autoCreateTunnels = autoCreateTunnels;
+        this.createWorkerForAutoCreatedTunnels = createWorkerForAutoCreatedTunnels;
+        if(autoCreateTunnels){
+            if(autoCreateProcessorFunction == undefined){
+                throw new Error("Cannot create tunnels without processor function")
+            } else {
+                this.autoCreateProcessorFunction = autoCreateProcessorFunction;
+            }
+        }
+    }
 
 
     offerMessage(message: Message, tunnel: Tunnel): ReadOnlyMessage {
@@ -23,9 +36,27 @@ export default class Queue{
         return tunnel.addMessage(message);
     }
 
+    removeTunnel(tunnelId: string) {
+        if(!this.containsTunnelWithId(tunnelId)){
+            throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
+        }
+
+        this.stTunnels.delete(tunnelId);
+        this.conditionalTunnels.delete(tunnelId);
+
+    }
+
     offerMessageForTunnelId(message: Message, tunnelId: string): ReadOnlyMessage {
         if(!this.containsTunnelWithId(tunnelId)) {
-            throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
+            if(!this.autoCreateTunnels)
+                throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
+            else {
+                this.createSTTunnelWithId(
+                    this.autoCreateProcessorFunction,
+                    tunnelId,
+                    this.createWorkerForAutoCreatedTunnels
+                )
+            }
         }
         let tunnel = this.getTunnelFromId(tunnelId);
         return tunnel.addMessage(message);

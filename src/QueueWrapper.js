@@ -2,6 +2,8 @@
 
 import Queue from "./Queue";
 
-export default class QueueJS {
+export default class Queue {
+
+
 
 }
