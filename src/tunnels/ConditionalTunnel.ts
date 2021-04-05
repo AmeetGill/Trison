@@ -7,8 +7,8 @@ import {ProcessorFunction} from "../types/ProcessorFunction";
 export default class ConditionalTunnel extends STTunnel implements ConditionalTunnelInterface {
     private readonly _matchFunction: MatcherFunction;
 
-    constructor(processor: ProcessorFunction,  matchFunction: MatcherFunction, tunnelId: string, preProcessor?: ProcessorFunction) {
-        super(processor,tunnelId,preProcessor);
+    constructor(processor: ProcessorFunction,  matchFunction: MatcherFunction, tunnelId: string, preProcessor?: ProcessorFunction, withWorker?: boolean) {
+        super(processor,tunnelId,preProcessor,withWorker);
 
         this._matchFunction = matchFunction;
     }

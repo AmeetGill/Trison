@@ -16,7 +16,7 @@ export default class Message {
     private _tunnelId: string;
 
     //data
-    private _data: object;
+    private readonly _data: object;
     private readonly _callbackFunction: CallbackFunction;
     private readonly _priority: number;
     private readonly _messageId: string;
@@ -50,15 +50,16 @@ export default class Message {
 
     // this will assign a new message id
      clone = {
-            "complete" : () =>
-                 new Message(
+            complete : () => {
+                return new Message(
                     _.cloneDeep<object>(this.getData()),
-                    this.getCallbackFunction,
+                    this.getCallbackFunction(),
                     this.getPriority()
-                ),
-            "with": {
-                "different": {
-                    "callbackFunction" : (newCallbackFunction: CallbackFunction) => {
+                )
+            },
+            with: {
+                different: {
+                    callbackFunction : (newCallbackFunction: CallbackFunction) => {
                         if(newCallbackFunction == undefined)
                             throw new Error(INVALID_MESSAGE_CALLBACK)
 
@@ -68,17 +69,17 @@ export default class Message {
                             this.getPriority()
                         )
                     },
-                    "priority": (newPriority: number) => {
+                    priority: (newPriority: number) => {
                         return new Message(
                             _.cloneDeep<object>(this.getData()),
-                            this.getCallbackFunction,
+                            this.getCallbackFunction(),
                             newPriority
                         )
                     },
-                    "data": (newData: object) => {
+                    data: (newData: object) => {
                         return new Message(
                             _.cloneDeep<object>(newData),
-                            this.getCallbackFunction,
+                            this.getCallbackFunction(),
                             this.getPriority()
                         )
                     }

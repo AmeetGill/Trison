@@ -45,7 +45,8 @@ export default () => {
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                "uuid"
+                "uuid",
+                false
             );
 
             let expectedTunnel: Tunnel = new STTunnel(
@@ -67,7 +68,8 @@ export default () => {
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                "uuid"
+                "uuid",
+                false
             );
 
             let expectedTunnel: Tunnel = new STTunnel(
@@ -105,7 +107,8 @@ export default () => {
 
             newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                "uuid"
+                "uuid",
+                false
             );
 
             let writeableMessage = new Message(
@@ -138,7 +141,8 @@ export default () => {
             let tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
                 processorFunction,
                 "uuid",
-                preProcessorFunction
+                preProcessorFunction,
+                false
             );
 
             let message = new Message(
@@ -166,7 +170,8 @@ export default () => {
                 let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
                     matcherFunction1,
                     processorFunction,
-                    preProcessorFunction
+                    preProcessorFunction,
+                    false
                 );
 
                 let message = new Message(

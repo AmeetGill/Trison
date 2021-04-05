@@ -12,9 +12,9 @@ import UUID from "./Utils/UUID";
 export default class Queue{
     private readonly stTunnels: Map<string,STTunnel> = new Map<string,STTunnel>();
     private readonly conditionalTunnels: Map<string,ConditionalTunnel> = new Map<string,ConditionalTunnel>();
-    private readonly workers: Worker[] = [];
 
     constructor() {}
+
 
     offerMessage(message: Message, tunnel: Tunnel): ReadOnlyMessage {
         if(!this.containsTunnel(tunnel)) {
@@ -90,7 +90,7 @@ export default class Queue{
     }
 
 
-    createSTTunnelWithId(processorFunction: ProcessorFunction, tunnelId: string): Tunnel {
+    createSTTunnelWithId(processorFunction: ProcessorFunction, tunnelId: string, withWorker: boolean): Tunnel {
         if(this.containsTunnelWithId(tunnelId)){
             throw new Error(DUPLICATE_TUNNEL_MESSAGE);
         }
@@ -98,16 +98,17 @@ export default class Queue{
         let newSTTunnel: STTunnel= new STTunnel(
                 processorFunction,
                 tunnelId,
+                undefined,
+                withWorker
             );
 
         this.stTunnels.set(tunnelId,newSTTunnel);
         return newSTTunnel;
     }
 
-
-    createSTTunnelWithoutId(processorFunction: ProcessorFunction ): Tunnel {
+    createSTTunnelWithoutId(processorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
         let tunnelId = UUID.generate();
-        return this.createSTTunnelWithId(processorFunction,tunnelId);
+        return this.createSTTunnelWithId(processorFunction,tunnelId,withWorker);
     }
 
     private getTunnelFromId(tunnelId: string): Tunnel {
@@ -123,38 +124,42 @@ export default class Queue{
         throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
     }
 
-    createSTTunnelWithPreProcessor(processorFunction: ProcessorFunction, tunnelId: string, preProcessorFunction: ProcessorFunction): Tunnel {
+    createSTTunnelWithPreProcessor(processorFunction: ProcessorFunction, tunnelId: string, preProcessorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
         if(this.containsTunnelWithId(tunnelId)){
             throw new Error(DUPLICATE_TUNNEL_MESSAGE);
         }
         let newSTTunnel: STTunnel = new STTunnel(
             processorFunction,
             tunnelId,
-            preProcessorFunction
+            preProcessorFunction,
+            withWorker
         )
         this.stTunnels.set(tunnelId,newSTTunnel);
         // need to think about should return whole tunnel
         return newSTTunnel;
     }
 
-    createConditionalTunnel(matchFunction: MatcherFunction, processorFunction: ProcessorFunction): Tunnel {
-        let tunnelId = UUID.generate();
-        let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
-            processorFunction,
-            matchFunction,
-            tunnelId
-        );
-        this.conditionalTunnels.set(tunnelId,conditionalTunnel);
-        return conditionalTunnel;
-    }
-
-    createConditionalTunnelWithPreProcessor(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, preProcessorFunction: ProcessorFunction): Tunnel {
+    createConditionalTunnel(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
         let tunnelId = UUID.generate();
         let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
             processorFunction,
             matchFunction,
             tunnelId,
-            preProcessorFunction
+            undefined,
+            withWorker
+        );
+        this.conditionalTunnels.set(tunnelId,conditionalTunnel);
+        return conditionalTunnel;
+    }
+
+    createConditionalTunnelWithPreProcessor(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, preProcessorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
+        let tunnelId = UUID.generate();
+        let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
+            processorFunction,
+            matchFunction,
+            tunnelId,
+            preProcessorFunction,
+            withWorker
         );
         this.conditionalTunnels.set(tunnelId,conditionalTunnel);
         return conditionalTunnel;

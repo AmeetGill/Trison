@@ -5,7 +5,7 @@ import * as chai from "chai";
 import chaiExclude from 'chai-exclude';
 import Queue from "../../src/Queue";
 import STTunnel from "../../src/tunnels/STTunnel";
-import {stub,createSandbox} from "sinon";
+import {createSandbox} from "sinon";
 import Tunnel from "../../src/interfaces/Tunnel";
 import {
     DUPLICATE_TUNNEL_MESSAGE,
@@ -40,7 +40,8 @@ export default () => {
             let newMultiLevelQueue = new Queue();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
-                processorFunction
+                processorFunction,
+                false
             );
 
             let expectedTunnel: Tunnel = new STTunnel(
@@ -63,7 +64,8 @@ export default () => {
             let newMultiLevelQueue = new Queue();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
-                processorFunction
+                processorFunction,
+                false
             );
 
             expect(() => tunnelCreated.addMessage(undefined)).to.throw(Error).with.property("message",UNDEFINED_MESSAGE)
@@ -77,7 +79,8 @@ export default () => {
             let newMultiLevelQueue = new Queue();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
-                processorFunction
+                processorFunction,
+                false
             );
 
             expect(() => tunnelCreated.pollMessage()).to.throw(Error).with.property("message",EMPTY_TUNNEL)
@@ -92,7 +95,8 @@ export default () => {
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             );
 
             let expectedTunnel: Tunnel = new STTunnel(
@@ -115,7 +119,8 @@ export default () => {
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             );
 
             let expectedTunnel: Tunnel = new STTunnel(
@@ -129,14 +134,16 @@ export default () => {
 
             expect(() => newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             )).to.throw(Error).with.property("message",DUPLICATE_TUNNEL_MESSAGE)
 
             let newUUID = "myUUID2";
 
             newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                newUUID
+                newUUID,
+                false
             );
 
             expect(newMultiLevelQueue.containsTunnelWithId(newUUID)).to.true;
@@ -165,7 +172,8 @@ export default () => {
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             );
 
             expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
@@ -214,7 +222,8 @@ export default () => {
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             );
 
             expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
@@ -259,7 +268,8 @@ export default () => {
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
-                myUUID
+                myUUID,
+                false
             );
 
             expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
@@ -271,7 +281,7 @@ export default () => {
                 tunnelCreated
             );
 
-            let readOnlyMessage2 = multiLevelQueue.offerMessage(
+            multiLevelQueue.offerMessage(
                 writeableMessage,
                 tunnelCreated
             );

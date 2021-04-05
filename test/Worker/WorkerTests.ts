@@ -6,6 +6,7 @@ import chaiExclude from 'chai-exclude';
 import Queue from "../../src/Queue";
 import {createSandbox} from "sinon";
 import Worker from "../../src/Workers/Worker";
+import STTunnel from "../../src/tunnels/STTunnel";
 
 chai.use(chaiExclude);
 let sandbox = createSandbox()
@@ -20,10 +21,10 @@ let data = {
 let processorFunction = (message: ReadOnlyMessage) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(message);
+    return message.clone();
 
 }
-describe("Pistol Tests", () => {
+export default () => {
 // export default () => {
     describe('test Worker ', function() {
         it('should start processing message ', function(done) {
@@ -33,13 +34,18 @@ describe("Pistol Tests", () => {
             let processedByTunnel1: string[] = [];
             let processedByTunnel2: string[] = [];
 
-            let tunnelCreated1 = newMultiLevelQueue.createSTTunnelWithoutId(
-                processorFunction
-            );
+            let tunnelCreated1 =  newMultiLevelQueue.createSTTunnelWithId(
+                processorFunction,
+                "tunnel1",
+                true
+            )
 
-            let tunnelCreated2 = newMultiLevelQueue.createSTTunnelWithoutId(
-                processorFunction
-            );
+            let tunnelCreated2 = newMultiLevelQueue.createSTTunnelWithId(
+                processorFunction,
+                "tunnel2",
+                true
+            )
+
 
             let message1Tunnel1 =  new Message(
                 {...data},
@@ -49,7 +55,7 @@ describe("Pistol Tests", () => {
                 2
             );
 
-            let message2Tunnel1 = message1Tunnel1.clone.complete()
+            let message2Tunnel1 = message1Tunnel1.clone.complete();
 
             let message1Tunnel2 = message1Tunnel1.clone.with.different.callbackFunction((message) => {
                 processedByTunnel2.push(message.getMessageId())
@@ -57,37 +63,32 @@ describe("Pistol Tests", () => {
 
             let message2Tunnel2 = message1Tunnel2.clone.complete()
 
-
-            tunnelCreated1.addMessage(message1Tunnel1)
-
-            tunnelCreated2.addMessage(message2Tunnel1)
-
-            tunnelCreated2.addMessage(message1Tunnel2)
-
-            tunnelCreated2.addMessage(message2Tunnel1);
-            // console.log(tunnelCreated1,tunnelCreated2)
-
             let expectedMessageOrder1: string[] = [message1Tunnel1.getMessageId(),message2Tunnel1.getMessageId()];
             let expectedMessageOrder2: string[] = [message1Tunnel2.getMessageId(),message2Tunnel2.getMessageId()];
 
-            let worker = new Worker([tunnelCreated1,tunnelCreated2]);
-
-            setTimeout(() => {
-                worker.dispatchAction();
-                console.log(processedByTunnel2);
-                console.log(processedByTunnel1);
-            },500)
-
-            setTimeout(() => {
-                worker.dispatchAction();
-                console.log(processedByTunnel2);
-                console.log(processedByTunnel1)
+            let message3Tunnel2 = message2Tunnel2.clone.with.different.callbackFunction((message) => {
+                // this will throw an error if expect fails, which will be catched in promise rejection
+                expect(processedByTunnel2).to.deep.equals(expectedMessageOrder2);
+                expect(expectedMessageOrder1).to.deep.equals(processedByTunnel1);
                 done()
-            },1800)
+            })
+
+
+            tunnelCreated1.addMessage(message1Tunnel1)
+
+            tunnelCreated1.addMessage(message2Tunnel1)
+
+            tunnelCreated2.addMessage(message1Tunnel2)
+
+            tunnelCreated2.addMessage(message2Tunnel2);
+            tunnelCreated2.addMessage(message3Tunnel2);
+
+            // console.log(tunnelCreated1,tunnelCreated2)
+
 
 
 
         });
     });
 
-});
+};

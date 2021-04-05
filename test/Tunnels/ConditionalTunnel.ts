@@ -61,12 +61,14 @@ export default  () => {
 
             let conditionalTunnel1 = multilevelQueue.createConditionalTunnel(
                 matcherFunction1,
-                processorFunction
+                processorFunction,
+                false
             );
 
             let conditionalTunnel2 = multilevelQueue.createConditionalTunnel(
                 matcherFunction2,
-                processorFunction
+                processorFunction,
+                false
             );
 
             let writableMessage1 = new Message(
@@ -115,7 +117,8 @@ export default  () => {
 
             let conditionalTunnel1 = multilevelQueue.createConditionalTunnel(
                 matcherFunction1,
-                processorFunction
+                processorFunction,
+                false
             );
 
 
@@ -177,7 +180,8 @@ export default  () => {
                 let newMatcherFunction = functionCreator(tunnelName);
                 let tunnel = multilevelQueue.createConditionalTunnel(
                     newMatcherFunction,
-                    processorFunction
+                    processorFunction,
+                    false
                 )
                 tunnels.push(tunnel);
                 let dataNew = {...data1};

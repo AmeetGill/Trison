@@ -15,6 +15,7 @@ export default class ReadOnlyMessage {
         this._priority = message.getPriority();
         this._tunnelId = message.getTunnelId();
         this._messageId = message.getMessageId();
+
     }
 
     getCallbackFunction(): CallbackFunction {
