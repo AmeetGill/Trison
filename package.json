@@ -2,9 +2,11 @@
   "name": "pistol",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "TS-Output/Queue.js",
+  "types": "TS-Output/Queue.d.ts",
   "scripts": {
     "compile": "tsc",
+    "prepublish":"tsc",
     "test": "nyc mocha -r ts-node/register test/index.ts"
   },
   "keywords": [],

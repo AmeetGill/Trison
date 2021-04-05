@@ -2,8 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
-    "outDir": "TS-Output"
+    "outDir": "TS-Output",
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "declaration":true
   },
   "include": ["./src"],
   "exclude": [
