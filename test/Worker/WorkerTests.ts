@@ -64,7 +64,7 @@ export default () => {
             let message2Tunnel2 = message1Tunnel2.clone.complete()
 
             let expectedMessageOrder1: string[] = [message1Tunnel1.getMessageId(),message2Tunnel1.getMessageId()];
-            let expectedMessageOrder2: string[] = [message1Tunnel2.getMessageId(),message2Tunnel2.getMessageId()];
+            let expectedMessageOrder2: string[] = [message1Tunnel2.getMessageId()];
 
             let message3Tunnel2 = message2Tunnel2.clone.with.different.callbackFunction((message) => {
                 // this will throw an error if expect fails, which will be catched in promise rejection
