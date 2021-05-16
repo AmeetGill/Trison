@@ -1,9 +1,9 @@
 {
-  "name": "pistol",
+  "name": "trison",
   "version": "0.0.1",
   "description": "",
-  "main": "pistol/Queue.js",
-  "types": "pistol/Queue.d.ts",
+  "main": "trison/Queue.js",
+  "types": "trison/Queue.d.ts",
   "scripts": {
     "compile": "tsc",
     "prepublish":"tsc",
