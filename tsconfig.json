@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "outDir": "TS-Output",
+    "outDir": "pistol",
     "lib": ["es2017", "es7", "es6", "dom"],
     "declaration":true
   },

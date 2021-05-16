@@ -2,8 +2,8 @@
   "name": "pistol",
   "version": "0.0.1",
   "description": "",
-  "main": "TS-Output/Queue.js",
-  "types": "TS-Output/Queue.d.ts",
+  "main": "pistol/Queue.js",
+  "types": "pistol/Queue.d.ts",
   "scripts": {
     "compile": "tsc",
     "prepublish":"tsc",
