@@ -19,7 +19,7 @@ let data = {
 }
 
 
-let processorFunction = (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);

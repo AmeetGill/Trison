@@ -9,19 +9,15 @@ export default  class Worker {
 
     constructor(){}
 
-    private processMessage(message: ReadOnlyMessage, processorFunction: ProcessorFunction): Promise<ReadOnlyMessage> {
-        return new Promise<ReadOnlyMessage> (
-            (resolve, reject) => {
-                try{
-                    let callbackFunction = message.getCallbackFunction();
-                    let processedMessage = processorFunction(message);
-                    callbackFunction(processedMessage);
-                    resolve(processedMessage);
-                }catch (err){
-                    reject(err);
-                }
-            }
-        )
+    private async processMessage(message: ReadOnlyMessage, processorFunction: ProcessorFunction): Promise<ReadOnlyMessage> {
+        try{
+            let callbackFunction = message.getCallbackFunction();
+            let processedMessage = await processorFunction(message);
+            callbackFunction(processedMessage);
+            return processedMessage;
+        }catch (err){
+            throw new Error("Error while Processing the message");
+        }
     }
 
 

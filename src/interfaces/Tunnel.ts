@@ -1,6 +1,7 @@
 import Message from "../Messages/Message";
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import {ProcessorFunction} from "../types/ProcessorFunction";
+import {PreProcessorFunction} from "../types/PreProcessorFunction";
 
 export default interface Tunnel {
 
@@ -8,7 +9,7 @@ export default interface Tunnel {
 
     pollMessage(): ReadOnlyMessage;
 
-    addPreProcessor(fn: ProcessorFunction);
+    addPreProcessor(fn: PreProcessorFunction);
 
     addProcessor(fn: ProcessorFunction);
 

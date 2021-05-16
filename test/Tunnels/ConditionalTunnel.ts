@@ -23,7 +23,13 @@ let data2 = {
     tunnel: "tunnel2"
 }
 
-let processorFunction = (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage) => {
+    let extractedData = message.getData();
+    extractedData["processed"] = true;
+    return new ReadOnlyMessage(message);
+}
+
+let preProcessorFunction = (message: ReadOnlyMessage) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);

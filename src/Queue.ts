@@ -7,6 +7,7 @@ import {ProcessorFunction} from "./types/ProcessorFunction";
 import {MatcherFunction} from "./types/MatcherFunction";
 import {DUPLICATE_TUNNEL_MESSAGE, NO_CONDITIONAL_TUNNEL_FOUND_MESSAGE, NO_TUNNEL_FOUND_WITH_ID_MESSAGE} from "./Utils/const";
 import UUID from "./Utils/UUID";
+import {PreProcessorFunction} from "./types/PreProcessorFunction";
 
 
 export default class Queue{
@@ -155,7 +156,7 @@ export default class Queue{
         throw new Error(NO_TUNNEL_FOUND_WITH_ID_MESSAGE);
     }
 
-    createSTTunnelWithPreProcessor(processorFunction: ProcessorFunction, tunnelId: string, preProcessorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
+    createSTTunnelWithPreProcessor(processorFunction: ProcessorFunction, tunnelId: string, preProcessorFunction: PreProcessorFunction, withWorker: boolean): Tunnel {
         if(this.containsTunnelWithId(tunnelId)){
             throw new Error(DUPLICATE_TUNNEL_MESSAGE);
         }
@@ -183,7 +184,7 @@ export default class Queue{
         return conditionalTunnel;
     }
 
-    createConditionalTunnelWithPreProcessor(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, preProcessorFunction: ProcessorFunction, withWorker: boolean): Tunnel {
+    createConditionalTunnelWithPreProcessor(matchFunction: MatcherFunction, processorFunction: ProcessorFunction, preProcessorFunction: PreProcessorFunction, withWorker: boolean): Tunnel {
         let tunnelId = UUID.generate();
         let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
             processorFunction,

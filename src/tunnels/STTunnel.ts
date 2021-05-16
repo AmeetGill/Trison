@@ -1,18 +1,19 @@
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import Message from "../Messages/Message";
 import {ProcessorFunction} from "../types/ProcessorFunction";
+import {PreProcessorFunction} from "../types/PreProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
 import {EMPTY_TUNNEL, NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
 import Worker from "../Workers/Worker";
 export default class STTunnel implements Tunnel {
     private readonly tunnelId: string;
     private readonly _messages: ReadOnlyMessage[] = [];
-    private _preProcessor: ProcessorFunction;
+    private _preProcessor: PreProcessorFunction;
     private _processor: ProcessorFunction;
     private _worker: Worker;
     private readonly haveWorker: boolean;
 
-    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: ProcessorFunction, withWorker?: boolean) {
+    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: PreProcessorFunction, withWorker?: boolean) {
 
         this.addPreProcessor(preProcessor);
 
@@ -71,7 +72,7 @@ export default class STTunnel implements Tunnel {
         return this._processor;
     }
 
-    addPreProcessor(fn: ProcessorFunction) {
+    addPreProcessor(fn: PreProcessorFunction) {
         if(fn != undefined)
             this._preProcessor = fn;
     }
