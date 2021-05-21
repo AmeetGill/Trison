@@ -172,18 +172,6 @@ export default () => {
             expect(() => new Message(
                 {...data},
                 () => {},
-                -1
-            )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_PRIORITY)
-
-            expect(() => new Message(
-                {...data},
-                () => {},
-                101
-            )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_PRIORITY)
-
-            expect(() => new Message(
-                {...data},
-                () => {},
                 2
             )).to.not.throw
 

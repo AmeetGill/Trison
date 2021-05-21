@@ -1,6 +1,6 @@
 {
   "name": "trison",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "trison/Queue.js",
   "types": "trison/Queue.d.ts",
@@ -9,7 +9,11 @@
     "prepublish":"tsc",
     "test": "nyc mocha -r ts-node/register test/index.ts"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AmeetGill/Trison"
+  },
+  "keywords": ["queue","multilevel","tunnel","trison","parallel","sequenece","messages"],
   "author": "",
   "license": "MIT",
   "devDependencies": {

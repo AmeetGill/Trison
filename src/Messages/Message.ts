@@ -34,7 +34,7 @@ export default class Message {
         } else
             throw new Error(INVALID_MESSAGE_PROPERTY+ ERROR_DELIM + INVALID_MESSAGE_CALLBACK);
 
-        if(priority != undefined && (priority >= 1 && priority <=  100))
+        if(priority != undefined)
             this._priority = priority;
         else
             throw new Error(INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_PRIORITY);
