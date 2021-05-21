@@ -6,7 +6,7 @@
   "types": "trison/Queue.d.ts",
   "scripts": {
     "compile": "tsc",
-    "prepublish":"tsc",
+    "prepublish": "tsc",
     "test": "nyc mocha -r ts-node/register test/index.ts"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "sinon": "^9.2.4",
     "ts-node": "^9.1.1",
     "ts-sinon": "^2.0.1",
+    "typedoc": "^0.20.36",
     "typescript": "^4.2.3"
   },
   "dependencies": {
