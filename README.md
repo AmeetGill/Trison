@@ -11,10 +11,11 @@ In Trision, Queues are called Tunnels and there are two types of Tunnels.
 
 # STTunnel
 These types of tunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
-How to create a STTunnel
+There are two ways to create a STTunnel
 
 Using Queue object
 ```typescript
+  import Queue from "trison";
   let newMultiLevelQueue = new Queue();
 
   let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
@@ -27,7 +28,7 @@ Using Queue object
 Directly from STTunnel
 
 ```typescript
-let newSTTunnel: STTunnel= new STTunnel(
+  let newSTTunnel: STTunnel= new STTunnel(
           processorFunction,
           tunnelId,
           undefined,
@@ -43,12 +44,15 @@ Conditional tunnel as the name implies the message will be pushed in the tunnel 
 
 Using Queue
 ```typescript
-let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
-    matcherFunction1,
-    processorFunction,
-    preProcessorFunction,
-    false
-);
+  import Queue from "trison";
+  let newMultiLevelQueue = new Queue();
+  
+  let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
+      matcherFunction1,
+      processorFunction,
+      preProcessorFunction,
+      false
+  );
 
 ```
 
