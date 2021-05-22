@@ -3,7 +3,7 @@ A TypeScript based Synchronous multilevel queue.
 
 Have you come across a use case where you have to run some tasks in parallel and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining a large number of queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies and these may also be removed in a future versions.
 
-![alt text](https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true)
+<img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
 
 Docs:
 
@@ -34,7 +34,7 @@ Using Queue object
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
   }
-  let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
+  let tunnelCreated: Tunnel = newMultiLevelQueue.createSTTunnelWithId(
       processorFunction, 
       "uuid", // unique id of tunnel
       false // withWorker: if true, it will create a worker that will start processing message automatically
@@ -50,7 +50,7 @@ With a preprocessor function (This processor function will run before inserting 
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
   }
-  let tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
+  let tunnel: Tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
       processorFunction,
       "uuid",
       preProcessorFunction, // 
@@ -72,7 +72,7 @@ Using Queue
     let data = message.getData();
     return data && data["tunnel"] && data["tunnel"] === "tunnel1";
   }
-  let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
+  let tunnel: Tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
       matcherFunction1, // this function will be used to match the message with tunnel
       processorFunction,
       preProcessorFunction,
@@ -91,12 +91,37 @@ There are two types of messages, one is Message and the other ReadOnlyMessage. U
         text: "Hello Testing"
     }
     // type CallbackFunction = (message: ReadOnlyMessage) => any;
-    let writeableMessage = new Message(
-          {...data}, // data to be passed in the function
+    let writeableMessage: Message = new Message(
+          {...data}, // data to be passed to the processor function
           () => {}, // CallbackFunction, this function will be called when this message is processed
           2 // priority of message, currenlty it is not being used 
       );
 ```
 
+Inserting message in a tunnel
+```typscript
+  ...
+  // for STTunnel and ConditionTunnel
+  // you cannot assign ID to ConditionalTunnel but you can get Id using the getter function 
+  newMultiLevelQueue.offerMessageForTunnelId(
+    message, // Message
+    "uuid" // unique Id
+   );
+   
+    // will match message with conditional tunnels only, using matcher function
+   newMultiLevelQueue.offer(message)
+
+```
+
+Poll message from tunnel
+```typscript
+  ...
+  let polledMessage: ReadOnlyMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
+  
+```
+
+# Worker
+
+Trison provide workers which can automatically start processing message, to use workers, you only have to set withWorker parameter true.
 
 
