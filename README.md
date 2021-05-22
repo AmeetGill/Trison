@@ -7,6 +7,17 @@ Have you come across a use case where you have to run some tasks in parallel and
 
 Docs:
 
+In Trison you have to first initialize a multilevel queue
+```typescript
+  import Queue from "trison"; 
+  let newMultiLevelQueue = new Queue(
+    true // Optional  autoCreateTunnels; this will create a tunnel if tunnel with a particular id is not present
+    true // Optional  createWorkerForAutoCreatedTunnels: whether to create workers for automatic created tunnels
+    true // Optional  autoCreateProcessorFunction: default processor function for autocreated tunnels
+  ); // initialize Queue, all paramters are optional
+
+```
+
 In Trision, Queues are called Tunnels and there are two types of Tunnels.
 
 # STTunnel
@@ -15,68 +26,77 @@ There are two ways to create a STTunnel
 
 Using Queue object
 ```typescript
-  import Queue from "trison";
-  let newMultiLevelQueue = new Queue();
-
+  import Queue from "trison"; 
+  let newMultiLevelQueue = new Queue(); // initialize Queue 
+  //  type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => Promise<ReadOnlyMessage>;
+  let processorFunction = async (message: ReadOnlyMessage) => {
+    let extractedData = message.getData();
+    extractedData["processed"] = true;
+    return new ReadOnlyMessage(message);
+  }
   let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
-      processorFunction,
-      "uuid",
-      false
+      processorFunction, 
+      "uuid", // unique id of tunnel
+      false // withWorker: if true, it will create a worker that will start processing message automatically
   );
 ```
 
-Directly from STTunnel
-
+With a preprocessor function (This processor function will run before inserting message into tunnel)
 ```typescript
-  let newSTTunnel: STTunnel= new STTunnel(
-          processorFunction,
-          tunnelId,
-          undefined,
-          withWorker
-      );
+  ...
+  // type PreProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage
+  let preProcessorFunction = (message: ReadOnlyMessage) => {
+    let extractedData: object = message.getData();
+    extractedData["processed"] = true;
+    return new ReadOnlyMessage(message);
+  }
+  let tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
+      processorFunction,
+      "uuid",
+      preProcessorFunction, // 
+      false
+  );
 ```
 
 While creating a tunnel you have to provide ProcessorFunction, which will process every message pushed in the tunnel. 
 
 # ConditionalTunnel
 
-Conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false
+Conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false. Currenlty message is checked iterativly and search will stop at first tunnel which return true
 
 Using Queue
 ```typescript
-  import Queue from "trison";
-  let newMultiLevelQueue = new Queue();
-  
+  ...
+  // type MatcherFunction = (readOnyMessage: ReadOnlyMessage) => boolean;
+  let matcherFunction1 = (message: ReadOnlyMessage) => {
+    let data = message.getData();
+    return data && data["tunnel"] && data["tunnel"] === "tunnel1";
+  }
   let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
-      matcherFunction1,
+      matcherFunction1, // this function will be used to match the message with tunnel
       processorFunction,
       preProcessorFunction,
-      false
+      false //  withWorker
   );
 
 ```
 
-Directly from ConditionalTunnel class
-```typescript
-let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
-      processorFunction,
-      matchFunction,
-      tunnelId,
-      undefined,
-);
-```
-
-
 # Messages
 
-There is two types of messages, one is Message and the other ReadOnlyMessage. Their functions are as the name describes
+There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create only Message but ReadOnlyMessage can be extracted from it.
+
+```typescript
+    let data = {
+        userId: "lk3kj3kj3kj3k3jk3j",
+        text: "Hello Testing"
+    }
+    // type CallbackFunction = (message: ReadOnlyMessage) => any;
+    let writeableMessage = new Message(
+          {...data}, // data to be passed in the function
+          () => {}, // CallbackFunction, this function will be called when this message is processed
+          2 // priority of message, currenlty it is not being used 
+      );
+```
 
 
-Types
-```
-type CallbackFunction = (message: ReadOnlyMessage) => any;
-type MatcherFunction = (readOnyMessage: ReadOnlyMessage) => boolean;
-type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => Promise<ReadOnlyMessage>;
-type PreProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage;
-```
 
