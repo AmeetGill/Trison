@@ -1,7 +1,7 @@
 # Trison
-A TypeScript based Synchronous multilevel queu.
+A TypeScript based Synchronous multilevel queue.
 
-Have you came across a usecase where you have to run some tasks in parallel and some in sequence with respect to other. One of the case can be in a chat app. In any chatting app you send messages to multiple people and for a particular person, messages must be in same order. So what we want is a queue for every person. Solution seems very simple but maintaing large number of queues is difficult and this is where trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using trison is less 3rd party dependencies, Trison only requires 3 dependencies and these may also be removed in future version.
+Have you come across a use case where you have to run some tasks in parallel and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining a large number of queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies and these may also be removed in a future versions.
 
 ![alt text](https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true)
 
@@ -10,11 +10,11 @@ Docs:
 In Trision, Queues are called Tunnels and there are two types of Tunnels.
 
 # STTunnel
-These type of tunnels are identified by their unique string id, which can be provide by user or can be automatically created using UUID. 
+These types of tunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
 How to create a STTunnel
 
 Using Queue object
-```
+```typescript
   let newMultiLevelQueue = new Queue();
 
   let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
@@ -26,7 +26,7 @@ Using Queue object
 
 Directly from STTunnel
 
-```
+```typescript
 let newSTTunnel: STTunnel= new STTunnel(
           processorFunction,
           tunnelId,
@@ -39,11 +39,10 @@ While creating a tunnel you have to provide ProcessorFunction, which will proces
 
 # ConditionalTunnel
 
-Conditional tunnel as name implies, message will me pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function which will take the message and return true or false
+Conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false
 
 Using Queue
-```
-
+```typescript
 let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
     matcherFunction1,
     processorFunction,
@@ -54,7 +53,7 @@ let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
 ```
 
 Directly from ConditionalTunnel class
-```
+```typescript
 let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
       processorFunction,
       matchFunction,
@@ -66,7 +65,7 @@ let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
 
 # Messages
 
-There are two type of messages, one is Message and other ReadOnlyMessage. There functions are as name describes
+There is two types of messages, one is Message and the other ReadOnlyMessage. Their functions are as the name describes
 
 
 Types
