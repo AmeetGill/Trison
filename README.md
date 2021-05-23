@@ -10,11 +10,11 @@ A TypeScript based Synchronous multilevel queue.
  - [STTunnel](#sttunnel) 
  - [ConditionalTunnel](#conditionaltunnel)  
  - [Messages](#messages)  
- - [Running Asynchronus Tasks](#running-asynchronus-tasks)  
+ - [Running Asynchronus Tasks](#running-asynchronous-tasks)  
  - [License](#license)
 
 ## Usecase
-Have you come across a use case where you have to run some tasks in parallel and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining a large number of queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies and these may also be removed in a future versions.
+Have you come across a use case where you have to run some tasks in parallel, and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining many queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies, and these may also be removed in a future versions.
 
 <img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
 
@@ -63,7 +63,7 @@ Using Queue object
   );
 ```
 
-With a preprocessor function (This processor function will run before inserting message into tunnel)
+With a preprocessor function (This processor function will run before inserting message into a tunnel)
 ```typescript
   ...
   // type PreProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage
@@ -83,7 +83,7 @@ With a preprocessor function (This processor function will run before inserting 
 While creating a tunnel you have to provide ProcessorFunction, which will process every message pushed in the tunnel. 
 
 ## ConditionalTunnel
-Conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false. Currenlty message is checked iterativly and search will stop at first tunnel which return true
+A conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false. A current message is checked iteratively and search will stop at first tunnel which return true
 
 Using Queue
 ```typescript
@@ -103,7 +103,7 @@ Using Queue
 ```
 
 ## Messages
-There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create only Message but ReadOnlyMessage can be extracted from it.
+There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create Message but ReadOnlyMessage can be extracted from it.
 
 ```typescript
     let data = {
@@ -145,9 +145,9 @@ Poll message from tunnel
 Trison provide workers which can automatically start processing messages. To use workers, you only have to set withWorker parameter true while creating a tunnel. 
 If you don't use a worker you have to process messages yourself by polling messages
 
-## Running Asynchronus Tasks
+## Running Asynchronous Tasks
 
-Return type of a processor function is of type ```typrscript Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
+Return type of processor function is of type ```typrscript Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function, and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
 
 ```typescript
    let processorFunction = async (message: ReadOnlyMessage) => {
@@ -163,4 +163,4 @@ Return type of a processor function is of type ```typrscript Promise<ReadOnlyMes
 
 ## License
 
-[MIT](LICENSE)
+[MIT]

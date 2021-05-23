@@ -13,6 +13,13 @@ export default class STTunnel implements Tunnel {
     private _worker: Worker;
     private readonly haveWorker: boolean;
 
+    /**
+     *
+     * @param processor: ProcessorFunction
+     * @param tunnelId: string
+     * @param preProcessor: PreProcessorFunction
+     * @param withWorker: boolean
+     */
     constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: PreProcessorFunction, withWorker?: boolean) {
 
         this.addPreProcessor(preProcessor);
@@ -27,10 +34,19 @@ export default class STTunnel implements Tunnel {
 
     }
 
+    /**
+     *  @return tunnelId: string
+     */
     getTunnelId(): string {
         return this.tunnelId;
     }
 
+    /**
+     *
+     * Process message using worker
+     *
+     * @private
+     */
     private processMessage() {
 
         this._worker.processNextMessage(this).then(r =>{
@@ -46,6 +62,12 @@ export default class STTunnel implements Tunnel {
             this.processMessage();
     }
 
+    /**
+     *
+     * Add message in this tunnel
+     *
+     * @param message: Message
+     */
     addMessage(message: Message): ReadOnlyMessage {
         if(message != undefined){
             if(message.getCallbackFunction() == undefined || message.getData() == undefined){
@@ -64,19 +86,40 @@ export default class STTunnel implements Tunnel {
         }
     }
 
+    /**
+     *
+     * @param message: ReadOnlyMessage
+     * @private
+     */
     private preProcessMessage(message: ReadOnlyMessage): ReadOnlyMessage {
         return this._preProcessor(message);
     }
 
+    /**
+     *
+     * Get processor Function of this tunnel
+     *
+     */
     getProcessorFunction(): ProcessorFunction{
         return this._processor;
     }
 
+    /**
+     * To change the existing PreProcessor
+     *
+     * @param fn: PreProcessorFunction
+     */
     addPreProcessor(fn: PreProcessorFunction) {
         if(fn != undefined)
             this._preProcessor = fn;
     }
 
+    /**
+     *
+     * Change Processor function if already not defined
+     *
+     * @param fn
+     */
     addProcessor(fn: ProcessorFunction) {
         if(fn != undefined) {
             if(this._processor == undefined)
@@ -88,6 +131,11 @@ export default class STTunnel implements Tunnel {
         }
     }
 
+    /**
+     *
+     * @return Number of messages in tunnel
+     *
+     */
     getLength(): number {
         if(this._messages == undefined)
             return 0;
@@ -95,6 +143,12 @@ export default class STTunnel implements Tunnel {
             return this._messages.length;
     }
 
+    /**
+     * Poll message
+     *
+     * @return ReadOnlyMessage
+     *
+     */
     pollMessage(): ReadOnlyMessage {
         // console.log("polling message",this.getTunnelId())
         if(this.getLength() > 0){
@@ -105,7 +159,10 @@ export default class STTunnel implements Tunnel {
 
     }
 
-
+    /**
+     *
+     * @param readonlyMessageId: string
+     */
     containsMessageWithId(readonlyMessageId: string): boolean {
         for(let message of this._messages){
             if(message.getMessageId() === readonlyMessageId){
@@ -115,6 +172,12 @@ export default class STTunnel implements Tunnel {
         return false;
     }
 
+    /**
+     *
+     * Get messages matching a messageId
+     *
+     * @param messageId: string
+     */
     getMessagesWithId(messageId: string): ReadOnlyMessage[] {
         let matchedMessages: ReadOnlyMessage[] = [];
         for(let message of this._messages){

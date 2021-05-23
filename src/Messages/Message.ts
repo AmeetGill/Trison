@@ -21,6 +21,12 @@ export default class Message {
     private readonly _priority: number;
     private readonly _messageId: string;
 
+    /**
+     *
+     * @param data: object
+     * @param callbackFunction: CallbackFunction
+     * @param priority: number
+     */
     constructor(data: object, callbackFunction: CallbackFunction, priority: number) {
 
         if( data != undefined)
@@ -114,6 +120,12 @@ export default class Message {
         return this._messageId;
     }
 
+    /**
+     *
+     * Compare two messages field excluding CallbackFunction
+     *
+     * @param writeableMessage: Message
+     */
     equals(writeableMessage: Message): boolean {
         return  writeableMessage.getPriority() == this.getPriority()
                         && (writeableMessage.getTunnelId() ? writeableMessage.getTunnelId() === this.getTunnelId() : true)

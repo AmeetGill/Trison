@@ -9,6 +9,12 @@ export default  class Worker {
 
     constructor(){}
 
+    /**
+     *
+     * @param message: ReadOnlyMessage
+     * @param processorFunction: ProcessorFunction
+     * @private
+     */
     private async processMessage(message: ReadOnlyMessage, processorFunction: ProcessorFunction): Promise<ReadOnlyMessage> {
         try{
             let callbackFunction = message.getCallbackFunction();
@@ -21,6 +27,10 @@ export default  class Worker {
     }
 
 
+    /**
+     *
+     * @param tunnel: Tunnel
+     */
     async processNextMessage(tunnel: Tunnel){
 
         if(this._currentlyProcessing){

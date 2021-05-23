@@ -9,6 +9,10 @@ export default class ReadOnlyMessage {
     private readonly _tunnelId: string;
     private readonly _messageId: string;
 
+    /**
+     *
+     * @param message: Message| ReadOnlyMessage
+     */
     constructor(message: Message | ReadOnlyMessage) {
         this._data = _.cloneDeep<object>(message.getData());
         this._callbackFunction = message.getCallbackFunction();
@@ -44,6 +48,12 @@ export default class ReadOnlyMessage {
         return this._messageId;
     }
 
+    /**
+     *
+     * Compare two messages field excluding CallbackFunction
+     *
+     * @param readonlyMessage
+     */
     equals(readonlyMessage: ReadOnlyMessage): boolean {
         return readonlyMessage.getTunnelId() === this.getTunnelId()
                     && readonlyMessage.getPriority() === this.getPriority()
