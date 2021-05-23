@@ -125,7 +125,7 @@ Poll message from tunnel
 Trison provide workers which can automatically start processing messages. To use workers, you only have to set withWorker parameter true while creating a tunnel. 
 If you don't use a worker you have to process messages yourself by polling messages
 
-#Running Asynchronus Tasks
+# Running Asynchronus Tasks
 
 Return type of a processor function is of type ```typrscript Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
 
