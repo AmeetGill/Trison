@@ -1,5 +1,5 @@
 # Trison
-[![npm version](https://img.shields.io/npm/v/axios.svg?style=flat-square)](https://www.npmjs.org/package/trison)
+[![npm version](https://img.shields.io/badge/npm-trison-success)](https://www.npmjs.org/package/trison)
 
 A TypeScript based Synchronous multilevel queue.
 
@@ -11,6 +11,7 @@ A TypeScript based Synchronous multilevel queue.
  - [ConditionalTunnel](#conditionaltunnel)  
  - [Messages](#messages)  
  - [Running Asynchronus Tasks](#running-asynchronus-tasks)  
+ - [License](#license)
 
 ## Usecase
 Have you come across a use case where you have to run some tasks in parallel and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining a large number of queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies and these may also be removed in a future versions.
@@ -160,4 +161,6 @@ Return type of a processor function is of type ```typrscript Promise<ReadOnlyMes
   }
 ```
 
+## License
 
+[MIT](LICENSE)
