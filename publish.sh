@@ -4,6 +4,8 @@ npm compile
 echo "Running Tests"
 echo "Copying package.json"
 cp package.json trison/
+echo "Copying Readme.md"
+cp README.md trison/
 echo "Changing Directory"
 # shellcheck disable=SC2164
 cd trison

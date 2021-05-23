@@ -13,7 +13,7 @@
     "url": "https://github.com/AmeetGill/Trison"
   },
   "keywords": ["queue","multilevel","tunnel","trison","parallel","sequenece","messages"],
-  "author": "ameetgill",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.2.15",
