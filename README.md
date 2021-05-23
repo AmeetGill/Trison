@@ -99,7 +99,7 @@ There are two types of messages, one is Message and the other ReadOnlyMessage. U
 ```
 
 Inserting message in a tunnel
-```typscript
+```typescript
   ...
   // for STTunnel and ConditionTunnel
   // you cannot assign ID to ConditionalTunnel but you can get Id using the getter function 
@@ -114,7 +114,7 @@ Inserting message in a tunnel
 ```
 
 Poll message from tunnel
-```typscript
+```typescript
   ...
   let polledMessage: ReadOnlyMessage = newMultiLevelQueue.poll(tunnel.getTunnelId());
   
