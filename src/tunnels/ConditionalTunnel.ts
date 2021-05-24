@@ -5,7 +5,7 @@ import {MatcherFunction} from "../types/MatcherFunction";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import {PreProcessorFunction} from "../types/PreProcessorFunction";
 
-export default class ConditionalTunnel extends STTunnel implements ConditionalTunnelInterface {
+export class ConditionalTunnel extends STTunnel implements ConditionalTunnelInterface {
     private readonly _matchFunction: MatcherFunction;
 
     /**
@@ -31,3 +31,5 @@ export default class ConditionalTunnel extends STTunnel implements ConditionalTu
     }
 
 }
+
+export default ConditionalTunnel;

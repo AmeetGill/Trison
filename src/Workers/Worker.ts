@@ -3,7 +3,7 @@ import Tunnel from "../interfaces/Tunnel";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import {CURRENTLY_PROCESSING} from "../Utils/const";
 
-export default  class Worker {
+export class Worker {
 
     private _currentlyProcessing = false;
 
@@ -53,3 +53,5 @@ export default  class Worker {
 
 
 }
+
+export default  Worker;

@@ -10,7 +10,7 @@ import UUID from "./Utils/UUID";
 import {PreProcessorFunction} from "./types/PreProcessorFunction";
 
 
-export default class Queue{
+export class Queue{
     private readonly stTunnels: Map<string,STTunnel> = new Map<string,STTunnel>();
     private readonly conditionalTunnels: Map<string,ConditionalTunnel> = new Map<string,ConditionalTunnel>();
     private readonly autoCreateTunnels: boolean = false;
@@ -286,3 +286,5 @@ export default class Queue{
     }
 
 }
+
+export default Queue;

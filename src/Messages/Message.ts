@@ -10,7 +10,7 @@ import {
 } from "../Utils/const";
 import UUID from "../Utils/UUID";
 
-export default class Message {
+export class Message {
 
     //to which tunnel message is assigned
     private _tunnelId: string;
@@ -133,3 +133,4 @@ export default class Message {
                         && _.isEqual(writeableMessage.getData(),this.getData());
     }
 }
+export default Message;
