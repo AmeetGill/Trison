@@ -58,11 +58,203 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#pistol" id="pistol" style="color: inherit; text-decoration: none;">
-					<h1>pistol</h1>
+				<a href="#trison" id="trison" style="color: inherit; text-decoration: none;">
+					<h1>Trison</h1>
 				</a>
-				<p>A TypeScript based Synchronous multilevel queue</p>
-				<p><img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" alt="alt text"></p>
+				<p>A TypeScript based Synchronous multilevel queue.</p>
+				<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
+					<h2>Table of Contents</h2>
+				</a>
+				<ul>
+					<li><a href="#usecase">Usecase</a>  </li>
+					<li><a href="#installing">Installing</a>  </li>
+					<li><a href="#sttunnel">STTunnel</a> </li>
+					<li><a href="#conditionaltunnel">ConditionalTunnel</a>  </li>
+					<li><a href="#messages">Messages</a>  </li>
+					<li><a href="#running-asynchronous-tasks">Running Asynchronous Tasks</a>  </li>
+					<li><a href="#license">License</a></li>
+					<li><a href="#api">API</a></li>
+				</ul>
+				<a href="#usecase" id="usecase" style="color: inherit; text-decoration: none;">
+					<h2>Usecase</h2>
+				</a>
+				<p>Have you come across a use case where you have to run some tasks in parallel, and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining many queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies, and these may also be removed in a future versions.</p>
+				<img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
+				<a href="#installing" id="installing" style="color: inherit; text-decoration: none;">
+					<h2>Installing</h2>
+				</a>
+				<p>Using npm:</p>
+				<pre><code class="language-bash"><span style="color: #000000">$ npm install trison</span>
+
+</code></pre>
+				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
+					<h2>Docs</h2>
+				</a>
+				<p>In Trison you have to first initialize a multilevel Queue</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Queue</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison&quot;</span><span style="color: #000000">; </span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Queue</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">true</span><span style="color: #000000"> </span><span style="color: #008000">// Optional  autoCreateTunnels; this will create a tunnel if tunnel with a particular id is not present</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">true</span><span style="color: #000000"> </span><span style="color: #008000">// Optional  createWorkerForAutoCreatedTunnels: whether to create workers for automatic created tunnels</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">true</span><span style="color: #000000"> </span><span style="color: #008000">// Optional  autoCreateProcessorFunction: default processor function for autocreated tunnels</span>
+<span style="color: #000000">  ); </span><span style="color: #008000">// initialize Queue, all paramters are optional</span>
+
+</code></pre>
+				<p>In Trision, sub-queues are called Tunnels and there are two types of Tunnels.</p>
+				<a href="#sttunnel" id="sttunnel" style="color: inherit; text-decoration: none;">
+					<h2>STTunnel</h2>
+				</a>
+				<p>These types of tunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID.
+				There are various ways to create a STTunnel</p>
+				<p>Using Queue object</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Queue</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">ReadOnlyMessage</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison/Messages/ReadOnlyMessage&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Queue</span><span style="color: #000000">(); </span><span style="color: #008000">// initialize Queue </span>
+<span style="color: #000000">  </span><span style="color: #008000">//  type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) =&gt; Promise&lt;ReadOnlyMessage&gt;;</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #795E26">processorFunction</span><span style="color: #000000"> = </span><span style="color: #0000FF">async</span><span style="color: #000000"> (</span><span style="color: #001080">message</span><span style="color: #000000">: </span><span style="color: #267F99">ReadOnlyMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">extractedData</span><span style="color: #000000"> = </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #795E26">getData</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #001080">extractedData</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;processed&quot;</span><span style="color: #000000">] = </span><span style="color: #0000FF">true</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ReadOnlyMessage</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">tunnelCreated</span><span style="color: #000000">: </span><span style="color: #267F99">Tunnel</span><span style="color: #000000"> = </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">createSTTunnelWithId</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #001080">processorFunction</span><span style="color: #000000">, </span>
+<span style="color: #000000">      </span><span style="color: #A31515">&quot;uuid&quot;</span><span style="color: #000000">, </span><span style="color: #008000">// unique id of tunnel, must be unique accross STTunnels</span>
+<span style="color: #000000">      </span><span style="color: #0000FF">false</span><span style="color: #000000"> </span><span style="color: #008000">// withWorker: if true, it will create a worker that will start processing message automatically</span>
+<span style="color: #000000">  );</span>
+</code></pre>
+				<p>With a preprocessor function (This processor function will run before inserting message into a tunnel)</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  ...</span>
+<span style="color: #000000">  </span><span style="color: #008000">// type PreProcessorFunction = (readOnlyMessage: ReadOnlyMessage) =&gt; ReadOnlyMessage</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #795E26">preProcessorFunction</span><span style="color: #000000"> = (</span><span style="color: #001080">message</span><span style="color: #000000">: </span><span style="color: #267F99">ReadOnlyMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">extractedData</span><span style="color: #000000">: </span><span style="color: #267F99">object</span><span style="color: #000000"> = </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #795E26">getData</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #001080">extractedData</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;preProcessed&quot;</span><span style="color: #000000">] = </span><span style="color: #0000FF">true</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ReadOnlyMessage</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">tunnel</span><span style="color: #000000">: </span><span style="color: #267F99">Tunnel</span><span style="color: #000000"> = </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">createSTTunnelWithPreProcessor</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #A31515">&quot;uuid&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">preProcessorFunction</span><span style="color: #000000">, </span>
+<span style="color: #000000">      </span><span style="color: #0000FF">false</span>
+<span style="color: #000000">  );</span>
+</code></pre>
+				<p>Creating STTunnel directly from class constructor</p>
+				<pre><code class="language-typescript"><span style="color: #000000">    </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">STTunnel</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison/tunnels/STTunnel&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">sTTunnel</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">STTunnel</span><span style="color: #000000">(</span>
+<span style="color: #000000">        </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #A31515">&quot;uuid&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">undefined</span><span style="color: #000000">, </span><span style="color: #008000">// optinal preprocessor function</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">true</span><span style="color: #000000"> </span><span style="color: #008000">// withWorker</span>
+<span style="color: #000000">    )</span>
+</code></pre>
+				<p>While creating a tunnel you have to provide ProcessorFunction, which will process every message pushed in the tunnel. </p>
+				<a href="#conditionaltunnel" id="conditionaltunnel" style="color: inherit; text-decoration: none;">
+					<h2>ConditionalTunnel</h2>
+				</a>
+				<p>A conditional tunnel as the name implies the message will be pushed in the tunnel only if a condition is met. For this condition, you have to provide a matcher function that will take the message and return true or false. A current message is checked iteratively and search will stop at first tunnel which return true</p>
+				<p>Using Queue</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  ...</span>
+<span style="color: #000000">  </span><span style="color: #008000">// type MatcherFunction = (readOnyMessage: ReadOnlyMessage) =&gt; boolean;</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #795E26">matcherFunction1</span><span style="color: #000000"> = (</span><span style="color: #001080">message</span><span style="color: #000000">: </span><span style="color: #267F99">ReadOnlyMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">data</span><span style="color: #000000"> = </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #795E26">getData</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">data</span><span style="color: #000000"> &amp;&amp; </span><span style="color: #001080">data</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;tunnel&quot;</span><span style="color: #000000">] &amp;&amp; </span><span style="color: #001080">data</span><span style="color: #000000">[</span><span style="color: #A31515">&quot;tunnel&quot;</span><span style="color: #000000">] === </span><span style="color: #A31515">&quot;tunnel1&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">tunnel</span><span style="color: #000000">: </span><span style="color: #267F99">Tunnel</span><span style="color: #000000"> = </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">createConditionalTunnelWithPreProcessor</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #001080">matcherFunction1</span><span style="color: #000000">, </span><span style="color: #008000">// this function will be used to match the message with tunnel</span>
+<span style="color: #000000">      </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">preProcessorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #0000FF">false</span><span style="color: #000000"> </span><span style="color: #008000">//  withWorker</span>
+<span style="color: #000000">  );</span>
+
+</code></pre>
+				<p>Creating ConditionalTunnels directly from class constructor</p>
+				<pre><code class="language-typescript"><span style="color: #000000"> </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">ConditionalTunnel</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison/tunnels/ConditionalTunnel&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000"> </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">conditionalTunnel</span><span style="color: #000000">: </span><span style="color: #267F99">ConditionalTunnel</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ConditionalTunnel</span><span style="color: #000000">(</span>
+<span style="color: #000000">        </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">matchFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">tunnelId</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">undefined</span><span style="color: #000000">, </span><span style="color: #008000">// optional preProcessor</span>
+<span style="color: #000000">        </span><span style="color: #001080">withWorker</span><span style="color: #000000"> </span><span style="color: #008000">// optioal</span>
+<span style="color: #000000"> );</span>
+
+</code></pre>
+				<a href="#messages" id="messages" style="color: inherit; text-decoration: none;">
+					<h2>Messages</h2>
+				</a>
+				<p>There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create Message but ReadOnlyMessage can be extracted from it.
+					Every message has a unique id and assigned automatically when you create a new message. Id will change if you clone Message class but will not change if you create a ReadOnlyMessage from id.
+				ReadOnlyMessage Id will not change on cloning.</p>
+				<pre><code class="language-typescript"><span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">data</span><span style="color: #000000"> = {</span>
+<span style="color: #000000">        </span><span style="color: #001080">userId:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;lk3kj3kj3kj3k3jk3j&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #001080">text:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Hello Testing&quot;</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">    </span><span style="color: #008000">// type CallbackFunction = (message: ReadOnlyMessage) =&gt; any;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">writeableMessage</span><span style="color: #000000">: </span><span style="color: #267F99">Message</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Message</span><span style="color: #000000">(</span>
+<span style="color: #000000">          {...</span><span style="color: #001080">data</span><span style="color: #000000">}, </span><span style="color: #008000">// data to be passed to the processor function</span>
+<span style="color: #000000">          () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {}, </span><span style="color: #008000">// CallbackFunction, this function will be called when this message is processed</span>
+<span style="color: #000000">          </span><span style="color: #098658">2</span><span style="color: #000000"> </span><span style="color: #008000">// priority of message, currenlty it is not being used </span>
+<span style="color: #000000">      );</span>
+</code></pre>
+				<p>Inserting message in a tunnel</p>
+				<p>Message with same id can exist in same tunnel.</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  ...</span>
+<span style="color: #000000">  </span><span style="color: #008000">// for STTunnel and ConditionTunnel</span>
+<span style="color: #000000">  </span><span style="color: #008000">// you cannot assign ID to ConditionalTunnel but you can get Id using the getter function </span>
+<span style="color: #000000">  </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">offerMessageForTunnelId</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #001080">message</span><span style="color: #000000">, </span><span style="color: #008000">// Message</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;uuid&quot;</span><span style="color: #000000"> </span><span style="color: #008000">// unique Id</span>
+<span style="color: #000000">   );</span>
+<span style="color: #000000">   </span>
+<span style="color: #000000">    </span><span style="color: #008000">// will match message with conditional tunnels only, using matcher function</span>
+<span style="color: #000000">   </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">offer</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">)</span>
+
+</code></pre>
+				<p>One more way to add messages is directly using Tunnel object. On creating a tunnel, tunnel object is returned, and you can use that object directly to push message into it.</p>
+				<pre><code class="language-typescript"><span style="color: #000000"> </span><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">STTunnel</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;trison/tunnels/STTunnel&quot;</span><span style="color: #000000">;</span>
+<span style="color: #000000"> </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">sTTunnel</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">STTunnel</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&quot;uuid&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">undefined</span><span style="color: #000000">, </span><span style="color: #008000">// optinal preprocessor function</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">true</span><span style="color: #000000"> </span><span style="color: #008000">// withWorker</span>
+<span style="color: #000000"> );</span>
+<span style="color: #000000"> </span><span style="color: #001080">sTTunnel</span><span style="color: #000000">.</span><span style="color: #795E26">addMessage</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">)</span>
+<span style="color: #000000"> </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">tunnel</span><span style="color: #000000">: </span><span style="color: #267F99">Tunnel</span><span style="color: #000000"> = </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">createConditionalTunnelWithPreProcessor</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #001080">matcherFunction1</span><span style="color: #000000">, </span><span style="color: #008000">// this function will be used to match the message with tunnel</span>
+<span style="color: #000000">    </span><span style="color: #001080">processorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">preProcessorFunction</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">false</span><span style="color: #000000"> </span><span style="color: #008000">//  withWorker</span>
+<span style="color: #000000"> );</span>
+<span style="color: #000000"> </span><span style="color: #001080">tunnel</span><span style="color: #000000">.</span><span style="color: #795E26">addMessage</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>Poll message from tunnel</p>
+				<pre><code class="language-typescript"><span style="color: #000000">  ...</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">polledMessage</span><span style="color: #000000">: </span><span style="color: #267F99">ReadOnlyMessage</span><span style="color: #000000"> = </span><span style="color: #001080">newMultiLevelQueue</span><span style="color: #000000">.</span><span style="color: #795E26">poll</span><span style="color: #000000">(</span><span style="color: #001080">tunnel</span><span style="color: #000000">.</span><span style="color: #795E26">getTunnelId</span><span style="color: #000000">());</span>
+<span style="color: #000000">  </span>
+</code></pre>
+				<a href="#workers" id="workers" style="color: inherit; text-decoration: none;">
+					<h2>Workers</h2>
+				</a>
+				<p>Trison provide workers which can automatically start processing messages. To use workers, you only have to set withWorker parameter true while creating a tunnel.
+				If you don&#39;t use a worker you have to process messages yourself by polling messages</p>
+				<a href="#running-asynchronous-tasks" id="running-asynchronous-tasks" style="color: inherit; text-decoration: none;">
+					<h2>Running Asynchronous Tasks</h2>
+				</a>
+				<p>Return type of processor function is of type <code>Promise&lt;ReadOnlyMessage&gt;</code>, so If you want to perform some async task in processor function, and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.</p>
+				<pre><code class="language-typescript"><span style="color: #000000">   </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #795E26">processorFunction</span><span style="color: #000000"> = </span><span style="color: #0000FF">async</span><span style="color: #000000"> (</span><span style="color: #001080">message</span><span style="color: #000000">: </span><span style="color: #267F99">ReadOnlyMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">extractedData</span><span style="color: #000000"> = </span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #795E26">getData</span><span style="color: #000000">();</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">data</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #795E26">axios</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">method:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;post&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">url:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;/user/12345&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">data:</span><span style="color: #000000"> {...</span><span style="color: #001080">extractedData</span><span style="color: #000000">}</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">ReadOnlyMessage</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+</code></pre>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>[MIT]</p>
+				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+					<h2>API</h2>
+				</a>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

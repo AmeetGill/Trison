@@ -217,3 +217,611 @@ Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, s
 [MIT]
 
 ## API
+
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">default</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="default.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="default.html#autocreateprocessorfunction" class="tsd-kind-icon">auto<wbr>Create<wbr>Processor<wbr>Function</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="default.html#autocreatetunnels" class="tsd-kind-icon">auto<wbr>Create<wbr>Tunnels</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="default.html#conditionaltunnels" class="tsd-kind-icon">conditional<wbr>Tunnels</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="default.html#createworkerforautocreatedtunnels" class="tsd-kind-icon">create<wbr>Worker<wbr>For<wbr>Auto<wbr>Created<wbr>Tunnels</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="default.html#sttunnels" class="tsd-kind-icon">st<wbr>Tunnels</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#containstunnel" class="tsd-kind-icon">contains<wbr>Tunnel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#containstunnelwithid" class="tsd-kind-icon">contains<wbr>Tunnel<wbr>With<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#createconditionaltunnel" class="tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#createconditionaltunnelwithpreprocessor" class="tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel<wbr>With<wbr>Pre<wbr>Processor</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#createsttunnelwithid" class="tsd-kind-icon">createSTTunnel<wbr>With<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#createsttunnelwithpreprocessor" class="tsd-kind-icon">createSTTunnel<wbr>With<wbr>Pre<wbr>Processor</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#createsttunnelwithoutid" class="tsd-kind-icon">createSTTunnel<wbr>Without<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="default.html#findmatchingtunnel" class="tsd-kind-icon">find<wbr>Matching<wbr>Tunnel</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="default.html#gettunnelfromid" class="tsd-kind-icon">get<wbr>Tunnel<wbr>From<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#offer" class="tsd-kind-icon">offer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#offermessage" class="tsd-kind-icon">offer<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#offermessagefortunnelid" class="tsd-kind-icon">offer<wbr>Message<wbr>For<wbr>Tunnel<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#poll" class="tsd-kind-icon">poll</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="default.html#removetunnel" class="tsd-kind-icon">remove<wbr>Tunnel</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new default<span class="tsd-signature-symbol">(</span>autoCreateTunnels<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, createWorkerForAutoCreatedTunnels<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, autoCreateProcessorFunction<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ProcessorFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L18">Queue.ts:18</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> autoCreateTunnels: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> createWorkerForAutoCreatedTunnels: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> autoCreateProcessorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="autocreateprocessorfunction" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> auto<wbr>Create<wbr>Processor<wbr>Function</h3>
+					<div class="tsd-signature tsd-kind-icon">auto<wbr>Create<wbr>Processor<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ProcessorFunction</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L18">Queue.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="autocreatetunnels" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> auto<wbr>Create<wbr>Tunnels</h3>
+					<div class="tsd-signature tsd-kind-icon">auto<wbr>Create<wbr>Tunnels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L16">Queue.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="conditionaltunnels" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> conditional<wbr>Tunnels</h3>
+					<div class="tsd-signature tsd-kind-icon">conditional<wbr>Tunnels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L15">Queue.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="createworkerforautocreatedtunnels" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> create<wbr>Worker<wbr>For<wbr>Auto<wbr>Created<wbr>Tunnels</h3>
+					<div class="tsd-signature tsd-kind-icon">create<wbr>Worker<wbr>For<wbr>Auto<wbr>Created<wbr>Tunnels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L17">Queue.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="sttunnels" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> st<wbr>Tunnels</h3>
+					<div class="tsd-signature tsd-kind-icon">st<wbr>Tunnels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L14">Queue.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="containstunnel" class="tsd-anchor"></a>
+					<h3>contains<wbr>Tunnel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">contains<wbr>Tunnel<span class="tsd-signature-symbol">(</span>tunnelToFind<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L130">Queue.ts:130</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tunnelToFind: <span class="tsd-signature-type">default</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="containstunnelwithid" class="tsd-anchor"></a>
+					<h3>contains<wbr>Tunnel<wbr>With<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">contains<wbr>Tunnel<wbr>With<wbr>Id<span class="tsd-signature-symbol">(</span>tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L155">Queue.ts:155</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createconditionaltunnel" class="tsd-anchor"></a>
+					<h3>create<wbr>Conditional<wbr>Tunnel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel<span class="tsd-signature-symbol">(</span>matchFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MatcherFunction</span>, processorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ProcessorFunction</span>, withWorker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L240">Queue.ts:240</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>matchFunction: <span class="tsd-signature-type">MatcherFunction</span></h5>
+								</li>
+								<li>
+									<h5>processorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>withWorker: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createconditionaltunnelwithpreprocessor" class="tsd-anchor"></a>
+					<h3>create<wbr>Conditional<wbr>Tunnel<wbr>With<wbr>Pre<wbr>Processor</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel<wbr>With<wbr>Pre<wbr>Processor<span class="tsd-signature-symbol">(</span>matchFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MatcherFunction</span>, processorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ProcessorFunction</span>, preProcessorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PreProcessorFunction</span>, withWorker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L260">Queue.ts:260</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>matchFunction: <span class="tsd-signature-type">MatcherFunction</span></h5>
+								</li>
+								<li>
+									<h5>processorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>preProcessorFunction: <span class="tsd-signature-type">PreProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>withWorker: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createsttunnelwithid" class="tsd-anchor"></a>
+					<h3>createSTTunnel<wbr>With<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">createSTTunnel<wbr>With<wbr>Id<span class="tsd-signature-symbol">(</span>processorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ProcessorFunction</span>, tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, withWorker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L168">Queue.ts:168</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>processorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>withWorker: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createsttunnelwithpreprocessor" class="tsd-anchor"></a>
+					<h3>createSTTunnel<wbr>With<wbr>Pre<wbr>Processor</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">createSTTunnel<wbr>With<wbr>Pre<wbr>Processor<span class="tsd-signature-symbol">(</span>processorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ProcessorFunction</span>, tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, preProcessorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PreProcessorFunction</span>, withWorker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L219">Queue.ts:219</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>processorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>preProcessorFunction: <span class="tsd-signature-type">PreProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>withWorker: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="createsttunnelwithoutid" class="tsd-anchor"></a>
+					<h3>createSTTunnel<wbr>Without<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">createSTTunnel<wbr>Without<wbr>Id<span class="tsd-signature-symbol">(</span>processorFunction<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ProcessorFunction</span>, withWorker<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L189">Queue.ts:189</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>processorFunction: <span class="tsd-signature-type">ProcessorFunction</span></h5>
+								</li>
+								<li>
+									<h5>withWorker: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="findmatchingtunnel" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> find<wbr>Matching<wbr>Tunnel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Matching<wbr>Tunnel<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L109">Queue.ts:109</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">default</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="gettunnelfromid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Tunnel<wbr>From<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Tunnel<wbr>From<wbr>Id<span class="tsd-signature-symbol">(</span>tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L199">Queue.ts:199</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="offer" class="tsd-anchor"></a>
+					<h3>offer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">offer<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L92">Queue.ts:92</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">default</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="offermessage" class="tsd-anchor"></a>
+					<h3>offer<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">offer<wbr>Message<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span>, tunnel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L44">Queue.ts:44</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">default</span></h5>
+								</li>
+								<li>
+									<h5>tunnel: <span class="tsd-signature-type">default</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="offermessagefortunnelid" class="tsd-anchor"></a>
+					<h3>offer<wbr>Message<wbr>For<wbr>Tunnel<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">offer<wbr>Message<wbr>For<wbr>Tunnel<wbr>Id<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span>, tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L70">Queue.ts:70</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">default</span></h5>
+								</li>
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="poll" class="tsd-anchor"></a>
+					<h3>poll</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">poll<span class="tsd-signature-symbol">(</span>tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L277">Queue.ts:277</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">default</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removetunnel" class="tsd-anchor"></a>
+					<h3>remove<wbr>Tunnel</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Tunnel<span class="tsd-signature-symbol">(</span>tunnelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AmeetGill/pistol/blob/c7032f9/src/Queue.ts#L55">Queue.ts:55</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tunnelId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="default.html" class="tsd-kind-icon">default</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="default.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#autocreateprocessorfunction" class="tsd-kind-icon">auto<wbr>Create<wbr>Processor<wbr>Function</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#autocreatetunnels" class="tsd-kind-icon">auto<wbr>Create<wbr>Tunnels</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#conditionaltunnels" class="tsd-kind-icon">conditional<wbr>Tunnels</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#createworkerforautocreatedtunnels" class="tsd-kind-icon">create<wbr>Worker<wbr>For<wbr>Auto<wbr>Created<wbr>Tunnels</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#sttunnels" class="tsd-kind-icon">st<wbr>Tunnels</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#containstunnel" class="tsd-kind-icon">contains<wbr>Tunnel</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#containstunnelwithid" class="tsd-kind-icon">contains<wbr>Tunnel<wbr>With<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#createconditionaltunnel" class="tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#createconditionaltunnelwithpreprocessor" class="tsd-kind-icon">create<wbr>Conditional<wbr>Tunnel<wbr>With<wbr>Pre<wbr>Processor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#createsttunnelwithid" class="tsd-kind-icon">createSTTunnel<wbr>With<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#createsttunnelwithpreprocessor" class="tsd-kind-icon">createSTTunnel<wbr>With<wbr>Pre<wbr>Processor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#createsttunnelwithoutid" class="tsd-kind-icon">createSTTunnel<wbr>Without<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#findmatchingtunnel" class="tsd-kind-icon">find<wbr>Matching<wbr>Tunnel</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="default.html#gettunnelfromid" class="tsd-kind-icon">get<wbr>Tunnel<wbr>From<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#offer" class="tsd-kind-icon">offer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#offermessage" class="tsd-kind-icon">offer<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#offermessagefortunnelid" class="tsd-kind-icon">offer<wbr>Message<wbr>For<wbr>Tunnel<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#poll" class="tsd-kind-icon">poll</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="default.html#removetunnel" class="tsd-kind-icon">remove<wbr>Tunnel</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
