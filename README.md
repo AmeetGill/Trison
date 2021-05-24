@@ -1,6 +1,4 @@
 # Trison
-[![npm version](https://img.shields.io/badge/npm-trison-success)](https://www.npmjs.org/package/trison)
-
 A TypeScript based Synchronous multilevel queue.
 
 ## Table of Contents  
@@ -10,15 +8,18 @@ A TypeScript based Synchronous multilevel queue.
  - [STTunnel](#sttunnel) 
  - [ConditionalTunnel](#conditionaltunnel)  
  - [Messages](#messages)  
- - [Running Asynchronus Tasks](#running-asynchronous-tasks)  
+ - [Running Asynchronous Tasks](#running-asynchronous-tasks)  
  - [License](#license)
+ - [API](#api)
 
 ## Usecase
 Have you come across a use case where you have to run some tasks in parallel, and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining many queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies, and these may also be removed in a future versions.
 
-<img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
+<img src="https://github.com/ameetgill/trison/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
 
 ## Installing
+
+[![npm version](https://img.shields.io/badge/npm-trison-success)](https://www.npmjs.org/package/trison)
 
 Using npm:
 
@@ -29,7 +30,7 @@ $ npm install trison
 
 ## Docs
 
-In Trison you have to first initialize a multilevel queue
+In Trison you have to first initialize a multilevel Queue, and sub-queues are called Tunnels and there are two types of Tunnels.
 ```typescript
   import Queue from "trison"; 
   let newMultiLevelQueue = new Queue(
@@ -40,15 +41,14 @@ In Trison you have to first initialize a multilevel queue
 
 ```
 
-In Trision, Queues are called Tunnels and there are two types of Tunnels.
-
 ## STTunnel
-These types of tunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
-There are two ways to create a STTunnel
+STTunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
+There are various ways to create a STTunnel
 
 Using Queue object
 ```typescript
-  import Queue from "trison"; 
+  import Queue from "trison";
+  import ReadOnlyMessage from "trison/Messages/ReadOnlyMessage";
   let newMultiLevelQueue = new Queue(); // initialize Queue 
   //  type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => Promise<ReadOnlyMessage>;
   let processorFunction = async (message: ReadOnlyMessage) => {
@@ -58,7 +58,7 @@ Using Queue object
   }
   let tunnelCreated: Tunnel = newMultiLevelQueue.createSTTunnelWithId(
       processorFunction, 
-      "uuid", // unique id of tunnel
+      "uuid", // unique id of tunnel, must be unique accross STTunnels
       false // withWorker: if true, it will create a worker that will start processing message automatically
   );
 ```
@@ -69,15 +69,26 @@ With a preprocessor function (This processor function will run before inserting 
   // type PreProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => ReadOnlyMessage
   let preProcessorFunction = (message: ReadOnlyMessage) => {
     let extractedData: object = message.getData();
-    extractedData["processed"] = true;
+    extractedData["preProcessed"] = true;
     return new ReadOnlyMessage(message);
   }
   let tunnel: Tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
       processorFunction,
       "uuid",
-      preProcessorFunction, // 
+      preProcessorFunction, 
       false
   );
+```
+
+Creating STTunnel directly from class constructor
+```typescript
+    import STTunnel from "trison/tunnels/STTunnel";
+    let sTTunnel = new STTunnel(
+        processorFunction,
+        "uuid",
+        undefined, // optinal preprocessor function
+        true // withWorker
+    )
 ```
 
 While creating a tunnel you have to provide ProcessorFunction, which will process every message pushed in the tunnel. 
@@ -102,10 +113,26 @@ Using Queue
 
 ```
 
-## Messages
-There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create Message but ReadOnlyMessage can be extracted from it.
+Creating ```ConditionalTunnels``` directly from class constructor
 
 ```typescript
+ import ConditionalTunnel from "trison/tunnels/ConditionalTunnel";
+ let conditionalTunnel: ConditionalTunnel = new ConditionalTunnel(
+        processorFunction,
+        matchFunction,
+        tunnelId,
+        undefined, // optional preProcessor
+        withWorker // optioal
+ );
+
+```
+
+## Messages
+There are two types of messages, one is ```Message``` and the other ```ReadOnlyMessage```. User can only create ```Message``` but ```ReadOnlyMessage``` can be extracted from it. Every message has a unique id and assigned automatically when you create a new message. Id will change if you clone Message class but will not change if you create a ```ReadOnlyMessage``` from id.
+```ReadOnlyMessage``` Id will not change on cloning.
+
+```typescript
+    import Message from "trison/Messages/Message";
     let data = {
         userId: "lk3kj3kj3kj3k3jk3j",
         text: "Hello Testing"
@@ -118,7 +145,11 @@ There are two types of messages, one is Message and the other ReadOnlyMessage. U
       );
 ```
 
+
+
 Inserting message in a tunnel
+
+Message with same id can exist in same tunnel. So you can process a message again and again (a Feature that i am thinking of)
 ```typescript
   ...
   // for STTunnel and ConditionTunnel
@@ -131,6 +162,26 @@ Inserting message in a tunnel
     // will match message with conditional tunnels only, using matcher function
    newMultiLevelQueue.offer(message)
 
+```
+
+One more way to add messages is directly using Tunnel object. On creating a tunnel from any method, Tunnel object is returned and you can use that object directly to push messages into it.
+
+```typescript
+ import STTunnel from "trison/tunnels/STTunnel";
+ let sTTunnel = new STTunnel(
+    processorFunction,
+    "uuid",
+    undefined, // optional preprocessor function
+    true // withWorker
+ );
+ sTTunnel.addMessage(message)
+ let tunnel: Tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
+    matcherFunction1, // this function will be used to match the message with tunnel
+    processorFunction,
+    preProcessorFunction,
+    false //  withWorker
+ );
+ tunnel.addMessage(message)
 ```
 
 Poll message from tunnel
@@ -147,7 +198,7 @@ If you don't use a worker you have to process messages yourself by polling messa
 
 ## Running Asynchronous Tasks
 
-Return type of processor function is of type ```typrscript Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function, and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
+Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function, and you want task to complete before processing next message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
 
 ```typescript
    let processorFunction = async (message: ReadOnlyMessage) => {
@@ -164,3 +215,7 @@ Return type of processor function is of type ```typrscript Promise<ReadOnlyMessa
 ## License
 
 [MIT]
+
+## API
+
+cooming soon !

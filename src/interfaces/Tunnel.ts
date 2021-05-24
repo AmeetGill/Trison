@@ -3,7 +3,7 @@ import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import {PreProcessorFunction} from "../types/PreProcessorFunction";
 
-export default interface Tunnel {
+export interface Tunnel {
 
     addMessage(message: Message): ReadOnlyMessage;
 
@@ -28,3 +28,5 @@ export default interface Tunnel {
     dispose();
 
 }
+
+export default Tunnel;

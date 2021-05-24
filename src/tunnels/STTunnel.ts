@@ -5,7 +5,7 @@ import {PreProcessorFunction} from "../types/PreProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
 import {EMPTY_TUNNEL, NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
 import Worker from "../Workers/Worker";
-export default class STTunnel implements Tunnel {
+export class STTunnel implements Tunnel {
     private readonly tunnelId: string;
     private readonly _messages: ReadOnlyMessage[] = [];
     private _preProcessor: PreProcessorFunction;
@@ -199,3 +199,5 @@ export default class STTunnel implements Tunnel {
     }
 
 }
+
+export default STTunnel;

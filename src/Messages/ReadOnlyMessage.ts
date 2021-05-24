@@ -2,7 +2,7 @@ import {CallbackFunction} from "../types/CallbackFunction";
 import * as _ from 'lodash';
 import Message from "./Message";
 
-export default class ReadOnlyMessage {
+export class ReadOnlyMessage {
     private readonly _data: object;
     private readonly _callbackFunction: CallbackFunction;
     private readonly _priority: number;
@@ -63,3 +63,5 @@ export default class ReadOnlyMessage {
 
 
 }
+
+export default ReadOnlyMessage;
