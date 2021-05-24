@@ -15,7 +15,7 @@ A TypeScript based Synchronous multilevel queue.
 ## Usecase
 Have you come across a use case where you have to run some tasks in parallel, and some in sequence with respect to others. One of the cases can be in a chat app. In any chatting app, you send messages to multiple people and for a particular person, messages must be in the same order. So what we want is a queue for every person. The solution seems very simple but maintaining many queues is difficult and this is where Trison will help it will create queues for you and process tasks automatically in sequence without any extra code. One more advantage of using Trison is less 3rd party dependencies, Trison only requires 3 dependencies, and these may also be removed in a future versions.
 
-<img src="https://github.com/ameetgill/pistol/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
+<img src="https://github.com/ameetgill/trison/blob/master/doc/JsSchedular.png?raw=true" width="400" height="250">
 
 ## Installing
 
@@ -824,4 +824,4 @@ Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, s
 	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="../assets/js/main.js"></script>
+<script src="https://github.com/ameetgill/trison/blob/enhance-docs/docs/assets/js/main.js"></script>
