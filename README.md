@@ -19,6 +19,8 @@ Have you come across a use case where you have to run some tasks in parallel, an
 
 ## Installing
 
+[![npm version](https://img.shields.io/badge/npm-trison-success)](https://www.npmjs.org/package/trison)
+
 Using npm:
 
 ```bash
@@ -28,7 +30,7 @@ $ npm install trison
 
 ## Docs
 
-In Trison you have to first initialize a multilevel Queue
+In Trison you have to first initialize a multilevel Queue, and sub-queues are called Tunnels and there are two types of Tunnels.
 ```typescript
   import Queue from "trison"; 
   let newMultiLevelQueue = new Queue(
@@ -39,10 +41,8 @@ In Trison you have to first initialize a multilevel Queue
 
 ```
 
-In Trision, sub-queues are called Tunnels and there are two types of Tunnels.
-
 ## STTunnel
-These types of tunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
+STTunnels are identified by their unique string id, which can be provided by the user or can be automatically created using UUID. 
 There are various ways to create a STTunnel
 
 Using Queue object
@@ -113,7 +113,7 @@ Using Queue
 
 ```
 
-Creating ConditionalTunnels directly from class constructor
+Creating ```ConditionalTunnels``` directly from class constructor
 
 ```typescript
  import ConditionalTunnel from "trison/tunnels/ConditionalTunnel";
@@ -128,11 +128,11 @@ Creating ConditionalTunnels directly from class constructor
 ```
 
 ## Messages
-There are two types of messages, one is Message and the other ReadOnlyMessage. User can only create Message but ReadOnlyMessage can be extracted from it.
-Every message has a unique id and assigned automatically when you create a new message. Id will change if you clone Message class but will not change if you create a ReadOnlyMessage from id.
-ReadOnlyMessage Id will not change on cloning.
+There are two types of messages, one is ```Message``` and the other ```ReadOnlyMessage```. User can only create ```Message``` but ```ReadOnlyMessage``` can be extracted from it. Every message has a unique id and assigned automatically when you create a new message. Id will change if you clone Message class but will not change if you create a ```ReadOnlyMessage``` from id.
+```ReadOnlyMessage``` Id will not change on cloning.
 
 ```typescript
+    import Message from "trison/Messages/Message";
     let data = {
         userId: "lk3kj3kj3kj3k3jk3j",
         text: "Hello Testing"
@@ -149,7 +149,7 @@ ReadOnlyMessage Id will not change on cloning.
 
 Inserting message in a tunnel
 
-Message with same id can exist in same tunnel.
+Message with same id can exist in same tunnel. So you can process a message again and again (a Feature that i am thinking of)
 ```typescript
   ...
   // for STTunnel and ConditionTunnel
@@ -164,14 +164,14 @@ Message with same id can exist in same tunnel.
 
 ```
 
-One more way to add messages is directly using Tunnel object. On creating a tunnel, tunnel object is returned, and you can use that object directly to push message into it.
+One more way to add messages is directly using Tunnel object. On creating a tunnel from any method, Tunnel object is returned and you can use that object directly to push messages into it.
 
 ```typescript
  import STTunnel from "trison/tunnels/STTunnel";
  let sTTunnel = new STTunnel(
     processorFunction,
     "uuid",
-    undefined, // optinal preprocessor function
+    undefined, // optional preprocessor function
     true // withWorker
  );
  sTTunnel.addMessage(message)
@@ -198,7 +198,7 @@ If you don't use a worker you have to process messages yourself by polling messa
 
 ## Running Asynchronous Tasks
 
-Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function, and you want task to complete before processing message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
+Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, so If you want to perform some async task in processor function, and you want task to complete before processing next message, you have to resolve the promise accordingly. You can also use async/await syntax as shown below.
 
 ```typescript
    let processorFunction = async (message: ReadOnlyMessage) => {
@@ -218,4 +218,4 @@ Return type of processor function is of type ``` Promise<ReadOnlyMessage> ```, s
 
 ## API
 
-coomin soon !
+cooming soon !
