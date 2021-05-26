@@ -2,6 +2,7 @@
 echo "Compiling Project"
 npm compile
 echo "Running Tests"
+npm test
 echo "Copying package.json"
 cp package.json trison/
 echo "Copying Readme.md"
