@@ -18,13 +18,13 @@ let data = {
 }
 
 
-let processorFunction = async (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return message.clone();
 }
 
-let preProcessorFunction = (message: ReadOnlyMessage) => {
+let preProcessorFunction = (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return message.clone();

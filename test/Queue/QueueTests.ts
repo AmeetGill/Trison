@@ -19,20 +19,20 @@ let data = {
 }
 
 
-let processorFunction = async (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
 
 }
 
-let preProcessorFunction = (message: ReadOnlyMessage) => {
+let preProcessorFunction = (message: ReadOnlyMessage<object>) => {
     let extractedData: object = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
 }
 
-let matcherFunction1 = (message: ReadOnlyMessage) => {
+let matcherFunction1 = (message: ReadOnlyMessage<object>) => {
     let data = message.getData();
     return data && data["tunnel"] && data["tunnel"] === "tunnel1";
 }
@@ -49,7 +49,7 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel(
                 processorFunction,
                 "uuid"
             );
@@ -72,7 +72,7 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel(
                 processorFunction,
                 "uuid"
             );

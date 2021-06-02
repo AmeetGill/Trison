@@ -23,24 +23,24 @@ let data2 = {
     tunnel: "tunnel2"
 }
 
-let processorFunction = async (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
 }
 
-let preProcessorFunction = (message: ReadOnlyMessage) => {
+let preProcessorFunction = (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
     return new ReadOnlyMessage(message);
 }
 
-let matcherFunction1 = (message: ReadOnlyMessage) => {
+let matcherFunction1 = (message: ReadOnlyMessage<object>) => {
     let data = message.getData();
     return data && data["tunnel"] && data["tunnel"] === "tunnel1";
 }
 
-let matcherFunction2 = (message: ReadOnlyMessage) => {
+let matcherFunction2 = (message: ReadOnlyMessage<object>) => {
     let data = message.getData();
     return data && data["tunnel"] && data["tunnel"] === "tunnel2";
 }
@@ -119,7 +119,7 @@ export default  () => {
 
         it('should error if no matching tunnel is found for a message', function () {
 
-            let multilevelQueue = new Queue();
+            let multilevelQueue = new Queue<object>();
 
             let conditionalTunnel1 = multilevelQueue.createConditionalTunnel(
                 matcherFunction1,
@@ -128,14 +128,14 @@ export default  () => {
             );
 
 
-            let writableMessage1 = new Message(
+            let writableMessage1 = new Message<object>(
                 data1,
                 () => {
                 },
                 2
             )
 
-            let writableMessage2 = new Message(
+            let writableMessage2 = new Message<object>(
                 data2,
                 () => {
                 },
@@ -168,17 +168,17 @@ export default  () => {
     describe('test create ConditionalTunnel multiple ', function () {
         it('should be able to push to tunnel only if condition matches', function () {
 
-            let multilevelQueue = new Queue();
+            let multilevelQueue = new Queue<object>();
 
             let functionCreator = (tunnelId) => {
-                return (message: ReadOnlyMessage) => {
+                return (message: ReadOnlyMessage<object>) => {
                     let data = message.getData();
                     return data && data["tunnel"] && data["tunnel"] === tunnelId;
                 };
             }
 
-            let tunnels: Tunnel[] = [];
-            let messages: Message[] = [];
+            let tunnels: Tunnel<object>[] = [];
+            let messages: Message<object>[] = [];
             let tunnelMessageMap = {};
 
             for (let i = 1; i <= 20; i++) {
@@ -192,7 +192,7 @@ export default  () => {
                 tunnels.push(tunnel);
                 let dataNew = {...data1};
                 dataNew["tunnel"] = tunnelName;
-                let message = new Message(
+                let message = new Message<object>(
                     dataNew,
                     () => {
                     },
@@ -209,7 +209,7 @@ export default  () => {
             }
 
             for (let tunnel of tunnels) {
-                let message: Message = tunnelMessageMap[tunnel.getTunnelId()];
+                let message: Message<object> = tunnelMessageMap[tunnel.getTunnelId()];
                 expect(tunnel.containsMessageWithId(message.getMessageId())).to.be.true;
                 expect(tunnel.getMessagesWithId(message.getMessageId())).to.deep.equals([message.createNewReadOnlyMessage()])
                 expect(tunnel.getLength()).to.equal(1);

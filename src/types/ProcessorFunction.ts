@@ -1,3 +1,3 @@
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
-export type ProcessorFunction = (readOnlyMessage: ReadOnlyMessage) => Promise<ReadOnlyMessage>;
+export type ProcessorFunction<T> = (readOnlyMessage: ReadOnlyMessage<T>) => Promise<ReadOnlyMessage<T>>;
 

@@ -1,2 +1,2 @@
 import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
-export type CallbackFunction = (message: ReadOnlyMessage) => any;
+export type CallbackFunction<T> = (message: ReadOnlyMessage<T>) => any;

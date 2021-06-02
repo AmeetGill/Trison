@@ -5,8 +5,8 @@ import {MatcherFunction} from "../types/MatcherFunction";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import {PreProcessorFunction} from "../types/PreProcessorFunction";
 
-export class ConditionalTunnel extends STTunnel implements ConditionalTunnelInterface {
-    private readonly _matchFunction: MatcherFunction;
+export class ConditionalTunnel<T> extends STTunnel<T> implements ConditionalTunnelInterface<T> {
+    private readonly _matchFunction: MatcherFunction<T>;
 
     /**
      *
@@ -16,7 +16,7 @@ export class ConditionalTunnel extends STTunnel implements ConditionalTunnelInte
      * @param preProcessor: PreProcessorFunction
      * @param withWorker: boolean
      */
-    constructor(processor: ProcessorFunction,  matchFunction: MatcherFunction, tunnelId: string, preProcessor?: PreProcessorFunction, withWorker?: boolean) {
+    constructor(processor: ProcessorFunction<T>,  matchFunction: MatcherFunction<T>, tunnelId: string, preProcessor?: PreProcessorFunction<T>, withWorker?: boolean) {
         super(processor,tunnelId,preProcessor,withWorker);
 
         this._matchFunction = matchFunction;
@@ -26,7 +26,7 @@ export class ConditionalTunnel extends STTunnel implements ConditionalTunnelInte
      *
      * @param messageToMatch: ReadOnlyMessage
      */
-    match(messageToMatch: ReadOnlyMessage): boolean {
+    match(messageToMatch: ReadOnlyMessage<T>): boolean {
         return this._matchFunction(messageToMatch);
     }
 
