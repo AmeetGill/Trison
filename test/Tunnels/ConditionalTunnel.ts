@@ -63,7 +63,7 @@ export default  () => {
     describe('test create ConditionalTunnel ', function () {
         it('should be able to add WritableMessage according to condition', function () {
 
-            let multilevelQueue = new Queue();
+            let multilevelQueue = new Queue<object>();
 
             let conditionalTunnel1 = multilevelQueue.createConditionalTunnel(
                 matcherFunction1,
@@ -77,14 +77,14 @@ export default  () => {
                 false
             );
 
-            let writableMessage1 = new Message(
+            let writableMessage1 = new Message<object>(
                 data1,
                 () => {
                 },
                 2
             )
 
-            let writableMessage2 = new Message(
+            let writableMessage2 = new Message<object>(
                 data2,
                 () => {
                 },

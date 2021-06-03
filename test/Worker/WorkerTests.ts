@@ -34,7 +34,7 @@ export default () => {
     describe('test Workers parallel Same number of messages', function() {
         it('should process message  ', function(done) {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let processedByTunnel1: string[] = [];
             let processedByTunnel2: string[] = [];
@@ -52,7 +52,7 @@ export default () => {
             )
 
 
-            let message1Tunnel1 =  new Message(
+            let message1Tunnel1 =  new Message<object>(
                 {...data},
                 (message) => {
                     processedByTunnel1.push(message.getMessageId());
@@ -99,7 +99,7 @@ export default () => {
     describe('test Workers parallel different number of messages  ', function() {
         it('should start processing message ', function(done) {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let processedByTunnel1: string[] = [];
             let processedByTunnel2: string[] = [];
@@ -117,7 +117,7 @@ export default () => {
             )
 
 
-            let message1Tunnel1 =  new Message(
+            let message1Tunnel1 =  new Message<object>(
                 {...data},
                 (message) => {
                     processedByTunnel1.push(message.getMessageId());
@@ -163,7 +163,7 @@ export default () => {
     describe('test Workers Single Queue ', function() {
         it('should start processing message ', function(done) {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let processedByTunnel1: string[] = [];
             let processedByTunnel2: string[] = [];
@@ -175,7 +175,7 @@ export default () => {
             )
 
 
-            let message1Tunnel1 =  new Message(
+            let message1Tunnel1 =  new Message<object>(
                 {...data},
                 (message) => {
                     processedByTunnel1.push(message.getMessageId());
@@ -215,7 +215,7 @@ export default () => {
     describe('test Workers Single Queue ', function() {
         it('should start processing message ', function(done) {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let processedByTunnel1: string[] = [];
             let processedByTunnel2: string[] = [];
@@ -227,7 +227,7 @@ export default () => {
             )
 
 
-            let message1Tunnel1 =  new Message(
+            let message1Tunnel1 =  new Message<object>(
                 {...data},
                 (message) => {
                     processedByTunnel1.push(message.getMessageId());

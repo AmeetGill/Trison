@@ -22,14 +22,14 @@ let data = {
 let processorFunction = async (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(message);
+    return new ReadOnlyMessage<object>(message);
 
 }
 
 let preProcessorFunction = (message: ReadOnlyMessage<object>) => {
     let extractedData: object = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(message);
+    return new ReadOnlyMessage<object>(message);
 }
 
 let matcherFunction1 = (message: ReadOnlyMessage<object>) => {
@@ -41,7 +41,7 @@ export default () => {
     describe('test containsTunnel ', function() {
         it('should return true if tunnel is present in the queue ', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -49,7 +49,7 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel<object> = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel<object>(
                 processorFunction,
                 "uuid"
             );
@@ -64,7 +64,7 @@ export default () => {
     describe('test offerMessage with non existent tunnel ', function() {
         it('should throw error if tunnel is not present in the queue ', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -72,13 +72,13 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel<object> = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel<object>(
                 processorFunction,
                 "uuid"
             );
 
             expect(tunnelCreated).to.deep.equal(expectedTunnel)
-            let writeableMessage = new Message(
+            let writeableMessage = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -103,7 +103,7 @@ export default () => {
     describe('test offerMessage with tunnel Id ', function() {
         it('should throw error if tunnel is not present in the queue ', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -111,7 +111,7 @@ export default () => {
                 false
             );
 
-            let writeableMessage = new Message(
+            let writeableMessage = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -136,7 +136,7 @@ export default () => {
     describe('test createTunnelsWithPreprocessor with tunnel Id ', function() {
         it('should preprocess a message if preprocessor is provided to the tunnel ', function () {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnel = newMultiLevelQueue.createSTTunnelWithPreProcessor(
                 processorFunction,
@@ -145,7 +145,7 @@ export default () => {
                 false
             );
 
-            let message = new Message(
+            let message = new Message<object>(
                 {...data},
                 () => {
                 },
@@ -165,7 +165,7 @@ export default () => {
     describe('test createConditionalTunnelsWithPreprocessor with tunnel Id ', function() {
         it('should preprocess a message if preprocessor is provided to the conditional tunnel ', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnel = newMultiLevelQueue.createConditionalTunnelWithPreProcessor(
                 matcherFunction1,
@@ -174,7 +174,7 @@ export default () => {
                 false
             );
 
-            let message = new Message(
+            let message = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -192,7 +192,7 @@ export default () => {
     describe('test remove tunnel with tunnel Id ', function() {
         it('should remove a tunnel from Queue ', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnel = newMultiLevelQueue.createSTTunnelWithoutId(
                 processorFunction,
@@ -213,13 +213,13 @@ export default () => {
     describe('test auto create tunnel ', function() {
         it('should create a tunnel with if tunnel doesnt exist in the Queue ', function() {
 
-            let newMultiLevelQueue = new Queue(
+            let newMultiLevelQueue = new Queue<object>(
                 true,
                 false,
                 processorFunction
             );
 
-            let message = new Message(
+            let message = new Message<object>(
                 {...data},
                 () => {},
                 2

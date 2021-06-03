@@ -9,15 +9,15 @@ export interface Tunnel<T> {
 
     pollMessage(): ReadOnlyMessage<T>;
 
-    addPreProcessor(fn: PreProcessorFunction);
+    addPreProcessor(fn: PreProcessorFunction<T>);
 
-    addProcessor(fn: ProcessorFunction);
+    addProcessor(fn: ProcessorFunction<T>);
 
     getLength(): number;
 
     getTunnelId(): string;
 
-    getProcessorFunction(): ProcessorFunction;
+    getProcessorFunction(): ProcessorFunction<T>;
 
     containsMessageWithId(messageId: string): boolean;
 
