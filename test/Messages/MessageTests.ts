@@ -24,7 +24,7 @@ export default () => {
             let messageId1 = "messageId1";
             let messageId2 = "messageId2";
 
-            let writeableMessage1 = new Message(
+            let writeableMessage1 = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -33,7 +33,7 @@ export default () => {
             // expect(writeableMessage1.getMessageId()).equal(messageId1);
             expect(writeableMessage1.getData()).excluding(["_messageId"]).to.deep.equals(data);
 
-            let writeableMessage2 = new Message(
+            let writeableMessage2 = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -91,7 +91,7 @@ export default () => {
 
             let tunnelId = "tunnelid";
 
-            let writeableMessage1 = new Message(
+            let writeableMessage1 = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -109,25 +109,25 @@ export default () => {
 
     describe('test invalid create WritableMessage ', function() {
         it('should throw error on invalid data', function() {
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 null,
                 () => {},
                 2
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_DATA)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 undefined,
                 () => {},
                 2
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_DATA)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {},
                 () => {},
                 2
             )).to.not.throw
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 { hello : 0},
                 () => {},
                 2
@@ -136,19 +136,19 @@ export default () => {
         });
 
         it('should throw error on invalid callback', function() {
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 null,
                 2
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_CALLBACK)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 undefined,
                 2
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_CALLBACK)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -157,19 +157,19 @@ export default () => {
         });
 
         it('should throw error on invalid priority', function() {
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 () => {},
                 null
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_PRIORITY)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 () => {},
                 undefined
             )).to.throw(Error).with.property("message",INVALID_MESSAGE_PROPERTY+ERROR_DELIM+INVALID_MESSAGE_PRIORITY)
 
-            expect(() => new Message(
+            expect(() => new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -181,7 +181,7 @@ export default () => {
     describe('test un-mutable WritableMessage ', function() {
         it('should be able to clone WritableMessage change not affecting one another', function() {
 
-            let writeableMessage1 = new Message(
+            let writeableMessage1 = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -210,7 +210,7 @@ export default () => {
     describe('test created ReadableMessage from WriteableMessage ', function() {
         it('should be able to create ReadableMessage', function() {
 
-            let writeableMessage1 = new Message(
+            let writeableMessage1 = new Message<object>(
                 {...data},
                 () => {},
                 2
@@ -239,7 +239,7 @@ export default () => {
     describe('test created ReadableMessage using Writeable Message ', function() {
         it('should be able to create ReadableMessage', function() {
 
-            let writeableMessage1 = new Message(
+            let writeableMessage1 = new Message<object>(
                 {...data},
                 () => {},
                 2

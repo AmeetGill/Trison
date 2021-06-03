@@ -3,25 +3,25 @@ import ReadOnlyMessage from "../Messages/ReadOnlyMessage";
 import {ProcessorFunction} from "../types/ProcessorFunction";
 import {PreProcessorFunction} from "../types/PreProcessorFunction";
 
-export interface Tunnel {
+export interface Tunnel<T> {
 
-    addMessage(message: Message): ReadOnlyMessage;
+    addMessage(message: Message<T>): ReadOnlyMessage<T>;
 
-    pollMessage(): ReadOnlyMessage;
+    pollMessage(): ReadOnlyMessage<T>;
 
-    addPreProcessor(fn: PreProcessorFunction);
+    addPreProcessor(fn: PreProcessorFunction<T>);
 
-    addProcessor(fn: ProcessorFunction);
+    addProcessor(fn: ProcessorFunction<T>);
 
     getLength(): number;
 
     getTunnelId(): string;
 
-    getProcessorFunction(): ProcessorFunction;
+    getProcessorFunction(): ProcessorFunction<T>;
 
     containsMessageWithId(messageId: string): boolean;
 
-    getMessagesWithId(messageId: string): ReadOnlyMessage[];
+    getMessagesWithId(messageId: string): ReadOnlyMessage<T>[];
 
     isEmpty(): boolean;
 

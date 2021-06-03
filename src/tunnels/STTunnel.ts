@@ -5,12 +5,12 @@ import {PreProcessorFunction} from "../types/PreProcessorFunction";
 import Tunnel from "../interfaces/Tunnel";
 import {EMPTY_TUNNEL, NO_MESSAGE_FOUND_WITH_ID, REQUIRED_PROPERTY_NOT_FOUND, UNDEFINED_MESSAGE} from "../Utils/const";
 import Worker from "../Workers/Worker";
-export class STTunnel implements Tunnel {
+export class STTunnel<T> implements Tunnel<T> {
     private readonly tunnelId: string;
-    private readonly _messages: ReadOnlyMessage[] = [];
-    private _preProcessor: PreProcessorFunction;
-    private _processor: ProcessorFunction;
-    private _worker: Worker;
+    private readonly _messages: ReadOnlyMessage<T>[] = [];
+    private _preProcessor: PreProcessorFunction<T>
+    private _processor: ProcessorFunction<T>;
+    private _worker: Worker<T>;
     private readonly haveWorker: boolean;
 
     /**
@@ -20,7 +20,7 @@ export class STTunnel implements Tunnel {
      * @param preProcessor: PreProcessorFunction
      * @param withWorker: boolean
      */
-    constructor(processor: ProcessorFunction, tunnelId: string, preProcessor?: PreProcessorFunction, withWorker?: boolean) {
+    constructor(processor: ProcessorFunction<T>, tunnelId: string, preProcessor?: PreProcessorFunction<T>, withWorker?: boolean) {
 
         this.addPreProcessor(preProcessor);
 
@@ -68,13 +68,13 @@ export class STTunnel implements Tunnel {
      *
      * @param message: Message
      */
-    addMessage(message: Message): ReadOnlyMessage {
+    addMessage(message: Message<T>): ReadOnlyMessage<T> {
         if(message != undefined){
             if(message.getCallbackFunction() == undefined || message.getData() == undefined){
                 throw new Error(REQUIRED_PROPERTY_NOT_FOUND);
             } else {
                 message.setTunnelId(this.tunnelId);
-                let readOnlyMessage: ReadOnlyMessage = message.createNewReadOnlyMessage();
+                let readOnlyMessage: ReadOnlyMessage<T> = message.createNewReadOnlyMessage();
                 if(this._preProcessor != undefined)
                     readOnlyMessage = this.preProcessMessage(readOnlyMessage);
                 this._messages.push(readOnlyMessage);
@@ -91,7 +91,7 @@ export class STTunnel implements Tunnel {
      * @param message: ReadOnlyMessage
      * @private
      */
-    private preProcessMessage(message: ReadOnlyMessage): ReadOnlyMessage {
+    private preProcessMessage(message: ReadOnlyMessage<T>): ReadOnlyMessage<T> {
         return this._preProcessor(message);
     }
 
@@ -100,7 +100,7 @@ export class STTunnel implements Tunnel {
      * Get processor Function of this tunnel
      *
      */
-    getProcessorFunction(): ProcessorFunction{
+    getProcessorFunction(): ProcessorFunction<T>{
         return this._processor;
     }
 
@@ -109,7 +109,7 @@ export class STTunnel implements Tunnel {
      *
      * @param fn: PreProcessorFunction
      */
-    addPreProcessor(fn: PreProcessorFunction) {
+    addPreProcessor(fn: PreProcessorFunction<T>) {
         if(fn != undefined)
             this._preProcessor = fn;
     }
@@ -120,7 +120,7 @@ export class STTunnel implements Tunnel {
      *
      * @param fn
      */
-    addProcessor(fn: ProcessorFunction) {
+    addProcessor(fn: ProcessorFunction<T>) {
         if(fn != undefined) {
             if(this._processor == undefined)
                 this._processor = fn;
@@ -149,7 +149,7 @@ export class STTunnel implements Tunnel {
      * @return ReadOnlyMessage
      *
      */
-    pollMessage(): ReadOnlyMessage {
+    pollMessage(): ReadOnlyMessage<T> {
         // console.log("polling message",this.getTunnelId())
         if(this.getLength() > 0){
             return this._messages.shift();
@@ -178,8 +178,8 @@ export class STTunnel implements Tunnel {
      *
      * @param messageId: string
      */
-    getMessagesWithId(messageId: string): ReadOnlyMessage[] {
-        let matchedMessages: ReadOnlyMessage[] = [];
+    getMessagesWithId(messageId: string): ReadOnlyMessage<T>[] {
+        let matchedMessages: ReadOnlyMessage<T>[] = [];
         for(let message of this._messages){
             if(message.getMessageId() === messageId){
                 matchedMessages.push(message.clone());

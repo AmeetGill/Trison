@@ -10,14 +10,14 @@ import {
 } from "../Utils/const";
 import UUID from "../Utils/UUID";
 
-export class Message {
+export class Message<T> {
 
     //to which tunnel message is assigned
     private _tunnelId: string;
 
     //data
-    private readonly _data: object;
-    private readonly _callbackFunction: CallbackFunction;
+    private readonly _data: T;
+    private readonly _callbackFunction: CallbackFunction<T>;
     private readonly _priority: number;
     private readonly _messageId: string;
 
@@ -27,10 +27,10 @@ export class Message {
      * @param callbackFunction: CallbackFunction
      * @param priority: number
      */
-    constructor(data: object, callbackFunction: CallbackFunction, priority: number) {
+    constructor(data: T, callbackFunction: CallbackFunction<T>, priority: number) {
 
         if( data != undefined)
-            this._data = _.cloneDeep<object>(data);
+            this._data = _.cloneDeep<T>(data);
         else
             throw new Error(INVALID_MESSAGE_PROPERTY+ ERROR_DELIM +INVALID_MESSAGE_DATA);
 
@@ -58,33 +58,33 @@ export class Message {
      clone = {
             complete : () => {
                 return new Message(
-                    _.cloneDeep<object>(this.getData()),
+                    _.cloneDeep<T>(this.getData()),
                     this.getCallbackFunction(),
                     this.getPriority()
                 )
             },
             with: {
                 different: {
-                    callbackFunction : (newCallbackFunction: CallbackFunction) => {
+                    callbackFunction : (newCallbackFunction: CallbackFunction<T>) => {
                         if(newCallbackFunction == undefined)
                             throw new Error(INVALID_MESSAGE_CALLBACK)
 
                         return new Message(
-                            _.cloneDeep<object>(this.getData()),
+                            _.cloneDeep<T>(this.getData()),
                             newCallbackFunction,
                             this.getPriority()
                         )
                     },
                     priority: (newPriority: number) => {
                         return new Message(
-                            _.cloneDeep<object>(this.getData()),
+                            _.cloneDeep<T>(this.getData()),
                             this.getCallbackFunction(),
                             newPriority
                         )
                     },
-                    data: (newData: object) => {
+                    data: (newData: T) => {
                         return new Message(
-                            _.cloneDeep<object>(newData),
+                            _.cloneDeep<T>(newData),
                             this.getCallbackFunction(),
                             this.getPriority()
                         )
@@ -93,7 +93,7 @@ export class Message {
             }
     }
 
-    getData(): object {
+    getData(): T {
         return this._data;
     }
 
@@ -112,7 +112,7 @@ export class Message {
         return this._tunnelId;
     }
 
-    getCallbackFunction(): CallbackFunction {
+    getCallbackFunction(): CallbackFunction<T> {
         return this._callbackFunction;
     }
 
@@ -126,7 +126,7 @@ export class Message {
      *
      * @param writeableMessage: Message
      */
-    equals(writeableMessage: Message): boolean {
+    equals(writeableMessage: Message<T>): boolean {
         return  writeableMessage.getPriority() == this.getPriority()
                         && (writeableMessage.getTunnelId() ? writeableMessage.getTunnelId() === this.getTunnelId() : true)
                         && writeableMessage.getMessageId() === this.getMessageId()

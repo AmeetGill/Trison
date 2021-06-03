@@ -25,17 +25,17 @@ let data = {
 }
 
 
-let processorFunction = async (message: ReadOnlyMessage) => {
+let processorFunction = async (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(message);
+    return new ReadOnlyMessage<object>(message);
 
 }
 
-let preProcessorFunction = (message: ReadOnlyMessage) => {
+let preProcessorFunction = (message: ReadOnlyMessage<object>) => {
     let extractedData = message.getData();
     extractedData["processed"] = true;
-    return new ReadOnlyMessage(message);
+    return new ReadOnlyMessage<object>(message);
 
 }
 
@@ -44,14 +44,14 @@ export default () => {
         it('should be able to ', function() {
             let stubbed = sandbox.stub(UUID).generate.returns("uuid")
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
                 processorFunction,
                 false
             );
 
-            let expectedTunnel: Tunnel = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel<object>(
                 processorFunction,
               "uuid"
             );
@@ -68,7 +68,7 @@ export default () => {
     describe('test addMessage for undefined message ', function() {
         it('should throw error if undefined message is passed', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
                 processorFunction,
@@ -83,7 +83,7 @@ export default () => {
     describe('test empty tunnel poll message ', function() {
         it('should throw error if polling is done on empty tunnel', function() {
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithoutId(
                 processorFunction,
@@ -98,7 +98,7 @@ export default () => {
     describe('test createSTTunnelWithId ', function() {
         it('should be able to ', function() {
             let myUUID = "myUUID"
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -106,7 +106,7 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel<object>(
                 processorFunction,
                 myUUID
             );
@@ -122,7 +122,7 @@ export default () => {
         it('should be able to ', function() {
             let myUUID = "myUUID"
 
-            let newMultiLevelQueue = new Queue();
+            let newMultiLevelQueue = new Queue<object>();
 
             let tunnelCreated = newMultiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -130,7 +130,7 @@ export default () => {
                 false
             );
 
-            let expectedTunnel: Tunnel = new STTunnel(
+            let expectedTunnel: Tunnel<object> = new STTunnel<object>(
                 processorFunction,
                 myUUID
             );
@@ -162,20 +162,82 @@ export default () => {
         it('should be able to add message in single STTunnel', function() {
             let myUUID = "myUUID"
             let callbackFunction = () => {};
-            let writeableMessage = new Message(
+            let writeableMessage = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
-            let expectedMessage1 = new Message(
+            let expectedMessage1 = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
 
-            let multiLevelQueue = new Queue();
+            let multiLevelQueue = new Queue<object>();
+
+            let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
+                processorFunction,
+                myUUID,
+                false
+            );
+
+            expectedMessage1.setTunnelId(tunnelCreated.getTunnelId());
+
+            let expectedMessage = expectedMessage1.createNewReadOnlyMessage()
+
+            let readOnlyMessage = multiLevelQueue.offerMessage(
+                writeableMessage,
+                tunnelCreated
+            );
+
+            expect(readOnlyMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.containsMessageWithId(readOnlyMessage.getMessageId())).to.be.true;
+            expect(tunnelCreated.getMessagesWithId(readOnlyMessage.getMessageId()))
+                .excluding(["_callbackFunction","_messageId"])
+                .to.deep.equal([expectedMessage]);
+            expect(() => tunnelCreated.getMessagesWithId(expectedMessage.getMessageId() + "x"))
+                .to.throw(Error).with.property("message",NO_MESSAGE_FOUND_WITH_ID);
+
+            let polledMessage = tunnelCreated.pollMessage();
+            expect(polledMessage).excluding(["_callbackFunction","_messageId"]).to.deep.equals(expectedMessage);
+            expect(tunnelCreated.isEmpty()).to.be.true
+
+
+        });
+    });
+
+    describe('test custom type message pushing using createSTTunnel ', function() {
+        it('should be able to add custom type message in single STTunnel', function() {
+            let myUUID = "myUUID"
+            let callbackFunction = () => {};
+            class MyClass{
+                userId: string = "32832094823904"
+                text: string = "hello"
+                processed: boolean = false
+            }
+            let writeableMessage = new Message<MyClass>(
+                new MyClass(),
+                callbackFunction,
+                2
+            );
+
+            let expectedMessage1 = new Message<MyClass>(
+                new MyClass(),
+                callbackFunction,
+                2
+            );
+
+            let processorFunction = async (message: ReadOnlyMessage<MyClass>) => {
+                let extractedData = message.getData();
+                extractedData.processed = true;
+                return new ReadOnlyMessage<MyClass>(message);
+
+            }
+
+
+            let multiLevelQueue = new Queue<MyClass>();
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -212,20 +274,20 @@ export default () => {
         it('should not be able to add message in single STTunnel', function() {
             let myUUID = "myUUID"
             let callbackFunction = () => {};
-            let writeableMessage = new Message(
+            let writeableMessage = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
-            let expectedMessage1 = new Message(
+            let expectedMessage1 = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
 
-            let multiLevelQueue = new Queue();
+            let multiLevelQueue = new Queue<object>();
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
@@ -258,20 +320,20 @@ export default () => {
         it('should be able to add same message again in single STTunnel', function() {
             let myUUID = "myUUID"
             let callbackFunction = () => {};
-            let writeableMessage = new Message(
+            let writeableMessage = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
-            let expectedMessage1 = new Message(
+            let expectedMessage1 = new Message<object>(
                 {...data},
                 callbackFunction,
                 2
             );
 
 
-            let multiLevelQueue = new Queue();
+            let multiLevelQueue = new Queue<object>();
 
             let tunnelCreated = multiLevelQueue.createSTTunnelWithId(
                 processorFunction,
