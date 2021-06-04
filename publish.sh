@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
+
+set -e
+if [ -d "trison" ]
+then
+  echo "Removing previous directory"
+  rm -r trison
+fi
 echo "Compiling Project"
-npm compile
+npm run compile
 echo "Running Tests"
 npm test
 echo "Copying package.json"
@@ -11,4 +18,4 @@ echo "Changing Directory"
 # shellcheck disable=SC2164
 cd trison
 echo "Publish"
-npm publish
+npm/

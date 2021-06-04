@@ -1,6 +1,6 @@
 {
   "name": "trison",
-  "version": "0.0.25",
+  "version": "0.0.3",
   "description": "",
   "main": "Queue.js",
   "types": "Queue.d.ts",
